@@ -1,0 +1,13 @@
+
+
+<%= form_with(model: @sales_upload, local: true) do |f| %>
+  <p>
+    <%= f.label :video %>
+    <%= f.file_field :video %>
+  </p>
+  <p>
+    <div class="actions">
+      <%= f.submit "Sd" %>
+    </div>
+  </p>
+  <% end %>
