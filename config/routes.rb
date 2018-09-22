@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :sales_uploads
   devise_for :buyers
   resources :orders
   devise_for :users
@@ -8,10 +9,15 @@ Rails.application.routes.draw do
     resources :orders
   end
 
+  resources :orders do
+    resources :sales_uploads
+  end
 
   get 'seller' => "listings#seller"
-  get 'sales' => "orders#sales"
-  post 'sales' => "orders#sales"
+  #get 'sales' => "orders#sales"
+  get 'sales' => "sales_uploads#sales"
+  post 'sales' => "sales_uploads#sales"
+  #post 'sales' => "orders#sales"
   get 'talent' => "listings#listings_page"
 
   get 'purchases' => "orders#purchases"

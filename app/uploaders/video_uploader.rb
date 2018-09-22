@@ -20,6 +20,19 @@ class VideoUploader < CarrierWave::Uploader::Base
   #
   #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
   # end
+  # Process files as they are uploaded:
+  process :resize_to_fit => [600, 900]
+  #
+  # def scale(width, height)
+  #   # do something
+  # end
+  version :medium do
+   process resize_to_fill: [500, 500]
+   end
+  # Create different versions of your uploaded files:
+  version :thumb do
+   process resize_to_fill: [150, 150]
+   end
 
   # Process files as they are uploaded:
   # process scale: [200, 300]

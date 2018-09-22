@@ -2,12 +2,12 @@
 
 <%= form_with(model: @sales_upload, local: true) do |f| %>
   <p>
-    <%= f.label :video %>
-    <%= f.file_field :video %>
+    <%= f.label :remote_video_url %>
+    <%= f.file_field :remote_video_url %>
   </p>
   <p>
     <div class="actions">
-      <%= f.submit "Sd" %>
+      <%= f.submit %>
     </div>
   </p>
   <% end %>

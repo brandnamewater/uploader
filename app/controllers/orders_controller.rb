@@ -3,8 +3,9 @@ class OrdersController < ApplicationController
   #before_action :authenticate_user! || before_action :authenticate_buyer
   before_action :deny_to_visitors
 
-  def sales
-    @orders = Order.all.where(seller: current_user) || @orders = Order.all.where(seller: current_buyer)
+  #def sales
+  #  @orders = Order.all.where(seller: current_user) || @orders = Order.all.where(seller: current_buyer)
+    #@sales_upload = SalesUpload.new(params[:video])
 
 #    @sales_upload = SalesUpload.new(params[:video])
 #    @sales_upload.user_id = current_user.id
@@ -20,7 +21,7 @@ class OrdersController < ApplicationController
 #        format.json { render json: @sales_upload.errors, status: :unprocessable_entity }
 #      end
 #    end
-  end
+  #end
 
   def purchases
     @orders = Order.all.where(buyer: current_user || current_buyer) #|| @orders = Order.all.where(buyer: current_buyer)
@@ -50,11 +51,14 @@ class OrdersController < ApplicationController
   def new
     @order = Order.new
     @listing = Listing.find(params[:listing_id])
+    #@order = Order.find(params[:order_id])
+
   end
 
   # GET /orders/1/edit
   def edit
   end
+
 
   # POST /orders
   # POST /orders.json
