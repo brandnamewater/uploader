@@ -13,8 +13,9 @@ class SalesUpload < ApplicationRecord
   #belongs_to :buyer, class_name: "User"
 
   belongs_to :user
+  has_many :listings
+
   has_many :orders
   has_many :buyers
-  has_many :listings
 
 end

@@ -38,7 +38,9 @@
         <td class="center">
           <div class="field">
 
-            <%= render 'form', sales_upload: @sales_upload %>
+            <%= link_to "Upload", new_order_sales_upload_path(@order, order) %>
+
+
 
           </div>
         </td>
