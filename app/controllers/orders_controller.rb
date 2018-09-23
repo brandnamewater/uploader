@@ -3,33 +3,22 @@ class OrdersController < ApplicationController
   #before_action :authenticate_user! || before_action :authenticate_buyer
   before_action :deny_to_visitors
 
-  #def sales
-  #  @orders = Order.all.where(seller: current_user) || @orders = Order.all.where(seller: current_buyer)
-    #@sales_upload = SalesUpload.new(params[:video])
+  def sales
+    @orders = Order.all.where(seller: current_user) || @orders = Order.all.where(seller: current_buyer)
+    @sales_upload = SalesUpload.new(params[:video])
+    #@sales_upload = SalesUpload.new(sales_upload_params)
+    #@sales_upload = SalesUpload.new
 
-#    @sales_upload = SalesUpload.new(params[:video])
-#    @sales_upload.user_id = current_user.id
+    #@order = Order.find(params[:orders_id])]
+    #@order = Order.find(params[:order_id])
+    @sales_upload.user_id = current_user.id
 
-  #  @sales_upload.name =  @sales_upload.image.file.filename if @sales_upload.name == ""
-
-#    respond_to do |format|
-#      if @sales_upload.save
-#        format.html { redirect_to @sales_upload, notice: 'Photo was successfully created.' }
-#        format.json { render action: 'show', status: :created, location: @sales_upload }
-#      else
-#        format.html { render action: 'new' }
-#        format.json { render json: @sales_upload.errors, status: :unprocessable_entity }
-#      end
-#    end
-  #end
+  end
 
   def purchases
     @orders = Order.all.where(buyer: current_user || current_buyer) #|| @orders = Order.all.where(buyer: current_buyer)
   #  @orders = Order.all.where(buyer: current_buyer)
-
-
-
- end
+  end
 
 
 
@@ -73,7 +62,6 @@ class OrdersController < ApplicationController
     #@order.buyer_id = (current_buyer.id || current_user.id)
     @order.seller_id = @seller.id
 
-    #before_action :user_orders
 
 
 

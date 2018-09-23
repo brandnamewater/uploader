@@ -1,13 +1,30 @@
 
 
-<%= form_with(model: @sales_upload, local: true) do |f| %>
-  <p>
-    <%= f.label :remote_video_url %>
-    <%= f.file_field :remote_video_url %>
-  </p>
-  <p>
-    <div class="actions">
-      <%= f.submit %>
+
+  <%= form_for([@listing, @order, @sales_upload]) do |form| %>
+
+
+
+    <% if sales_upload.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(sales_upload.errors.count, "error") %> prohibited this sales_upload from being saved:</h2>
+
+        <ul>
+        <% sales_upload.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= form.label :video %>
+      <%= form.file_field :video %>
     </div>
-  </p>
-  <% end %>
+
+  <!-- ADD EDITING -->
+
+    <div class="actions">
+      <%= form.submit %>
+    </div>
+<% end %>

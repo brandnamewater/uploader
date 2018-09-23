@@ -2,16 +2,17 @@ class SalesUploadsController < ApplicationController
   before_action :set_sales_upload, only: [:show, :edit, :update, :destroy]
 
 
-  def sales
-    @orders = Order.all.where(seller: current_user) || @orders = Order.all.where(seller: current_buyer)
-    #@sales_upload = SalesUpload.new(params[:video])
-    #@sales_upload = SalesUpload.new(sales_upload_params)
-    @sales_upload = SalesUpload.new
-    #@order = Order.find(params[:orders_id])]
-    #@order = Order.find(params[:order_id])
-    @sales_upload.user_id = current_user.id
-
-  end
+#  def sales
+#    @orders = Order.all.where(seller: current_user) || @orders = Order.all.where(seller: current_buyer)
+#    @sales_upload = SalesUpload.new(params[:video])
+#    #@sales_upload = SalesUpload.new(sales_upload_params)
+#    @sales_upload = SalesUpload.new
+#
+#    #@order = Order.find(params[:orders_id])]
+#    #@order = Order.find(params[:order_id])
+#    @sales_upload.user_id = current_user.id
+#
+#  end
 
 
   # GET /sales_uploads
@@ -41,7 +42,10 @@ class SalesUploadsController < ApplicationController
   def create
     @sales_upload = SalesUpload.new(sales_upload_params)
     @sales_upload.user_id = current_user.id
+    @order = Order.find(params[:order_id])
 
+    @sales_upload.order_id = @sales_upload.id
+    @buyer = @order.buyer
     #@order = Order.find(params[:order_id])
 
 
