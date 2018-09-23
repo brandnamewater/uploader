@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :sales_uploads
+  #resources :sales_uploads
   devise_for :buyers
   #resources :orders
   devise_for :users
@@ -15,11 +15,16 @@ end
 
   get 'seller' => "listings#seller"
   #get 'sales' => "orders#sales"
-  get 'sales' => "sales_uploads#sales"
-  post 'sales' => "sales_uploads#sales"
+  # get 'sales' => "sales_uploads#sales"
+  # post 'sales' => "sales_uploads#sales"
 
-#  get 'sales' => "orders#sales"
-#  post 'sales' => "orders#sales"
+
+
+
+  #new_order_sales_upload post '/orders/:order_ids(.:format) sales_uploads#new'
+
+ get 'sales' => "orders#sales"
+ post 'sales' => "orders#sales"
 
   #post 'sales' => "orders#sales"
   get 'talent' => "listings#listings_page"

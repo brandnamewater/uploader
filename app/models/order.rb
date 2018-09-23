@@ -9,8 +9,8 @@ class Order < ApplicationRecord
   belongs_to :buyer, class_name: "User"
   belongs_to :seller, class_name: "User"
 #  belongs_to :buyer
-  #has_one :sales_upload
-  has_one :sales_upload, :as => :video
-
+  has_one :sales_upload
+  #has_one :sales_upload, :as => :video
+  #has_many :sales_uploads
 
 end

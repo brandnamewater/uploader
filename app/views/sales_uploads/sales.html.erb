@@ -36,13 +36,15 @@
         <td class="center"><%= order.created_at.strftime("%B %-d, %Y") %></td>
 
         <td class="center">
-          <div class="field">
 
-            <%= link_to "Upload", new_order_sales_upload_path(@order, order) %>
+          <%= link_to video_tag(sales_upload.video_url(:thumb)), order %>
+          <%= link_to "Upload", new_order_sales_upload_path( order, @order ), class: "btn btn-primary" %>
 
-
-
+            </ul>
           </div>
+
+
+
         </td>
 
 

@@ -38,9 +38,9 @@
         <td class="center">
           <div class="field">
 
+            <%= link_to video_tag(sales_upload.video_url(:thumb)), order.sales_upload if @sales_upload.video? %>
 
-            <%= link_to "Upload", new_listing_order_sales_upload_path(order) %>
-
+            <%= link_to "Upload", new_order_sales_upload_path( order, @order ), class: "btn btn-primary" %>
 
           </div>
         </td>

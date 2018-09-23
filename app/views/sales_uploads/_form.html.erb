@@ -1,6 +1,4 @@
-<%= form_for([@listing, @order, @sales_upload]) do |form| %>
-
-
+<%= form_for([@order, @sales_upload]) do |form| %>
 
   <% if sales_upload.errors.any? %>
     <div id="error_explanation">
@@ -15,6 +13,7 @@
   <% end %>
 
   <div class="field">
+    <%= video_tag(@order.video_url) if @order.video? %>
     <%= form.label :video %>
     <%= form.file_field :video %>
   </div>
@@ -27,6 +26,6 @@
     <%= form.submit %>
   </div>
 
-  <%= link_to 'Edit', sales_uploads_path(@sales_upload) %>
+  <%= link_to 'Edit', edit_order_sales_upload_path(@order, @order, @sales_upload) %>
 
 <% end %>

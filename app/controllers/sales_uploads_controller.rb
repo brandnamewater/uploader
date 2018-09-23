@@ -2,16 +2,16 @@ class SalesUploadsController < ApplicationController
   before_action :set_sales_upload, only: [:show, :edit, :update, :destroy]
 
 
-  def sales
-    @orders = Order.all.where(seller: current_user) || @orders = Order.all.where(seller: current_buyer)
-    @sales_upload = SalesUpload.new(params[:video])
-    #@sales_upload = SalesUpload.new(sales_upload_params)
-  #  @sales_upload = SalesUpload.new
-
-
-    @sales_upload.user_id = current_user.id
-
-  end
+  # def sales
+  #   @orders = Order.all.where(seller: current_user) || @orders = Order.all.where(seller: current_buyer)
+  #   @sales_upload = SalesUpload.new(params[:video])
+  #   #@sales_upload = SalesUpload.new(sales_upload_params)
+  # #  @sales_upload = SalesUpload.new
+  #
+  #
+  #   @sales_upload.user_id = current_user.id
+  #
+  # end
 
 
   # GET /sales_uploads
@@ -35,25 +35,28 @@ class SalesUploadsController < ApplicationController
 
   # GET /sales_uploads/1/edit
   def edit
+    @order = Order.find(params[:order_id])
   end
 
   # POST /sales_uploads
   # POST /sales_uploads.json
   def create
     @sales_upload = SalesUpload.new(sales_upload_params)
-    @sales_upload.user_id = current_user.id
     @order = Order.find(params[:order_id])
+    @buyer = @order.buyer
+
+    @sales_upload.user_id = current_user.id
     #@order = Order.find(params[:buyer_id])
 
-
-    @sales_upload.order_id = @sales_upload.id
+  #  @sales_upload.order_id = @sales_upload.id
+    @sales_upload.order_id = @order.id
     @buyer = @order.buyer
     #@order = Order.find(params[:order_id])
 
 
     respond_to do |format|
       if @sales_upload.save
-        format.html { redirect_to @sales_upload, notice: 'Shout upload was successfully created.' }
+        format.html { redirect_to order_sales_upload_path( @order, @order, @sales_upload), notice: 'Shout upload was successfully created.' }
         format.json { render :show, status: :created, location: @sales_upload }
       else
         format.html { render :new }
@@ -67,7 +70,7 @@ class SalesUploadsController < ApplicationController
   def update
     respond_to do |format|
       if @sales_upload.update(sales_upload_params)
-        format.html { redirect_to @sales_upload, notice: 'Sales upload was successfully updated.' }
+        format.html { redirect_to '/sales', notice: 'Sales upload was successfully updated.' }
         format.json { render :show, status: :ok, location: @sales_upload }
       else
         format.html { render :edit }

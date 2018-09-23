@@ -3,17 +3,17 @@ class OrdersController < ApplicationController
   #before_action :authenticate_user! || before_action :authenticate_buyer
   before_action :deny_to_visitors
 
-#  def sales
-#    @orders = Order.all.where(seller: current_user) || @orders = Order.all.where(seller: current_buyer)
-#    @sales_upload = SalesUpload.new(params[:video])
+  def sales
+    @orders = Order.all.where(seller: current_user) || @orders = Order.all.where(seller: current_buyer)
+    @sales_upload = SalesUpload.new(params[:video])
     #@sales_upload = SalesUpload.new(sales_upload_params)
     #@sales_upload = SalesUpload.new
 
     #@order = Order.find(params[:orders_id])]
     #@order = Order.find(params[:order_id])
-#    @sales_upload.user_id = current_user.id
+    @sales_upload.user_id = current_user.id
 
-#  end
+  end
 
   def purchases
     @orders = Order.all.where(buyer: current_user || current_buyer) #|| @orders = Order.all.where(buyer: current_buyer)
