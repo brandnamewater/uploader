@@ -1,3 +1,5 @@
+<h1>asdf</h1>
+
 <%= form_for([@order, @sales_upload]) do |form| %>
 
   <% if sales_upload.errors.any? %>
@@ -13,6 +15,8 @@
   <% end %>
 
   <div class="field">
+    <%= link_to video_tag(sales_upload.video_url(:thumb)), order.sales_upload if @sales_upload.video? %>
+
     <%= video_tag(@order.video_url) if @order.video? %>
     <%= form.label :video %>
     <%= form.file_field :video %>

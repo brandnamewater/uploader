@@ -3,6 +3,16 @@ class OrdersController < ApplicationController
   #before_action :authenticate_user! || before_action :authenticate_buyer
   before_action :deny_to_visitors
 
+  def order_and_sales_upload
+    #Order.where(:id).joins(:sales_upload).where("sales_upload.sorder_id = ?")
+
+    if Order.where(id: Sales_upload.pluck(:order_id)) == true
+    end
+
+
+end
+
+
   def sales
     @orders = Order.all.where(seller: current_user) || @orders = Order.all.where(seller: current_buyer)
     @sales_upload = SalesUpload.new(params[:video])
