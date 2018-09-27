@@ -15,7 +15,6 @@
   <% end %>
 
   <div class="field">
-    <%= link_to video_tag(sales_upload.video_url(:thumb)), order.sales_upload if @sales_upload.video? %>
 
     <%= video_tag(@order.video_url) if @order.video? %>
     <%= form.label :video %>

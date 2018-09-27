@@ -1,19 +1,15 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Address:</strong>
-  <%= @order.address %>
+  <strong>Name:</strong>
+  <%= @order.name %>
 </p>
 
 <p>
-  <strong>City:</strong>
-  <%= @order.city %>
+  <strong>Description:</strong>
+  <%= @order.description %>
 </p>
 
-<p>
-  <strong>State:</strong>
-  <%= @order.state %>
-</p>
 
-<%= link_to 'Edit', edit_order_path(@order) %> |
+<%= link_to 'Edit', edit_listing_order_path(@order) %> |
 <%= link_to 'Back', orders_path %>

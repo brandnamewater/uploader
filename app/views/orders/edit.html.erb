@@ -1,6 +1,13 @@
+<% if buyer_signed_in? %>
 <h1>Editing Order</h1>
+<% end %>
 
-<%= render 'form', order: @order %>
+<% if user_signed_in? %>
+<h1>Upload your video!</h1>
+<% end %>
+
+
+<%= render 'sales_upload_video', order: @order %>
 
 <%= link_to 'Show', @order %> |
 <%= link_to 'Back', orders_path %>

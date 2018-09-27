@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   #resources :sales_uploads
   devise_for :buyers
-  #resources :orders
+  resources :orders
   devise_for :users
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
@@ -9,9 +9,6 @@ Rails.application.routes.draw do
     resources :orders
 end
 
-  resources :orders do
-    resources :sales_uploads
-  end
 
   get 'seller' => "listings#seller"
   #get 'sales' => "orders#sales"

@@ -16,9 +16,12 @@
       <p>
         <%= number_to_currency (@listing.price) %>
       </p>
+
+
+
       <br>
       <div class="center">
-        <%= link_to "Buy", new_listing_order_path(@listing), class: 'btn btn-primary' %>
+        <%= link_to "Get your Shout", new_listing_order_path(@listing), class: 'btn btn-primary' %>
     </div>
 
   </div>

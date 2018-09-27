@@ -10,6 +10,11 @@ class Listing < ApplicationRecord
 
   belongs_to :user
   has_many :orders
+  #has_many :orders through: :sales_uploads
+
+
+
+
 
   def self.search(search)
     where("name LIKE ?","%#{search}%")

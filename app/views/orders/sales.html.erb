@@ -6,6 +6,7 @@
 
 <li><%= link_to 'Create New Talent Listing', new_listing_path , class: "btn btn-link" %></li>
 
+<%= render 'modal' %>
 
 <div class="center">
   <h1>Your Orders Page</h1>
@@ -38,12 +39,11 @@
         <td class="center">
           <div class="field">
 
-            <% if @order_sales_relationship.present? %>
-            <%= link_to '/sales' %>
+            <% if order.video.present? %>
+              <p>Uploaded!</p>
             <% else %>
-            <%= link_to "Upload", new_order_sales_upload_path( order, @order ), class: "btn btn-primary" %>
+              <%= link_to "Upload", edit_order_path(order) %>
             <% end %>
-
 
 
           </div>

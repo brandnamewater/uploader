@@ -15,13 +15,16 @@ end
 
   def sales
     @orders = Order.all.where(seller: current_user) || @orders = Order.all.where(seller: current_buyer)
-    @sales_upload = SalesUpload.new(params[:video])
+    #@sales_upload = SalesUpload.new(params[:video])
+    #@listing = Listing.find(params[:listing_id])
+
     #@sales_upload = SalesUpload.new(sales_upload_params)
     #@sales_upload = SalesUpload.new
 
     #@order = Order.find(params[:orders_id])]
     #@order = Order.find(params[:order_id])
-    @sales_upload.user_id = current_user.id
+    #@sales_upload.user_id = current_user.id
+    @order = Order.new
 
   end
 
@@ -91,11 +94,20 @@ end
   def update
     respond_to do |format|
       if @order.update(order_params)
-        format.html { redirect_to @order, notice: 'Order was successfully updated.' }
+        if user_signed_in?
+        format.html { redirect_to @order, notice: 'Shout was successfully uploaded.' }
         format.json { render :show, status: :ok, location: @order }
       else
         format.html { render :edit }
         format.json { render json: @order.errors, status: :unprocessable_entity }
+      end
+      if buyer_signed_in?
+      format.html { redirect_to @order, notice: 'Order was successfully updated.' }
+      format.json { render :show, status: :ok, location: @order }
+    else
+      format.html { render :edit }
+      format.json { render json: @order.errors, status: :unprocessable_entity }
+    end
       end
     end
   end
@@ -118,7 +130,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:address, :city, :state, :image, :video)
+      params.require(:order).permit(:name, :address, :city, :state, :image, :video)
     end
 
     def deny_to_visitors

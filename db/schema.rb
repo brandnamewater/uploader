@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_22_015535) do
+ActiveRecord::Schema.define(version: 2018_09_26_052907) do
 
   create_table "buyers", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 2018_09_22_015535) do
     t.integer "exp_date"
     t.integer "exp_year"
     t.string "video"
+    t.string "name"
   end
 
   create_table "sales_uploads", force: :cascade do |t|

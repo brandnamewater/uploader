@@ -1,16 +1,13 @@
+  <%= form_for([@listing, @order]) do |form| %>
 
 
 
-  <%= form_for([@listing, @order, @sales_upload]) do |form| %>
-
-
-
-    <% if sales_upload.errors.any? %>
+    <% if @order.errors.any? %>
       <div id="error_explanation">
-        <h2><%= pluralize(sales_upload.errors.count, "error") %> prohibited this sales_upload from being saved:</h2>
+        <h2><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
 
         <ul>
-        <% sales_upload.errors.full_messages.each do |message| %>
+        <% order.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
         </ul>
@@ -21,8 +18,6 @@
       <%= form.label :video %>
       <%= form.file_field :video %>
     </div>
-    <%= image_tag(@sales_upload.video_url) %>
-    <%= link_to "Upload", new_listing_order_sales_upload_path %>
 
 
   <!-- ADD EDITING -->
