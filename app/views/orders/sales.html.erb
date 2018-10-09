@@ -6,7 +6,6 @@
 
 <li><%= link_to 'Create New Talent Listing', new_listing_path , class: "btn btn-link" %></li>
 
-<%= render 'modal' %>
 
 <div class="center">
   <h1>Your Orders Page</h1>
@@ -25,6 +24,7 @@
         <th class="center">Customer</th>
         <th class="center">Price</th>
         <th class="center">Date</th>
+        <th class="center">View Shout</th>
         <th class="center">Upload Your Shout!</th>
         <th class="center">Action</th>
       </tr>
@@ -35,6 +35,7 @@
         <td class="center"><%= order.buyer.name %></td>
         <td class="center"><%= number_to_currency(order.listing.price) %></td>
         <td class="center"><%= order.created_at.strftime("%B %-d, %Y") %></td>
+        <td class="center"><%= link_to "View", order_path(order) %></td>
 
         <td class="center">
           <div class="field">

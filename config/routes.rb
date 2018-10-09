@@ -3,6 +3,11 @@ Rails.application.routes.draw do
   devise_for :buyers
   resources :orders
   devise_for :users
+
+  resources :users
+
+
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   resources :listings do
@@ -19,7 +24,6 @@ end
 
 
   #new_order_sales_upload post '/orders/:order_ids(.:format) sales_uploads#new'
-
  get 'sales' => "orders#sales"
  post 'sales' => "orders#sales"
 
@@ -27,6 +31,15 @@ end
   get 'talent' => "listings#listings_page"
 
   get 'purchases' => "orders#purchases"
+
+
+  get 'dashboard' => "dashboard#dashboard"
+  get 'shouts' => "dashboard#tables"
+  get 'charts' => "dashboard#charts"
+
+get 'auth' => "users#index"
+
+
 
   root to: "listings#index"
 

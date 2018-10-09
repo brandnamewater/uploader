@@ -4,16 +4,15 @@ class Order < ApplicationRecord
   serialize :video, JSON # If you use SQLite, add this line.
 
 
-  validates_presence_of :video
+  #validates_presence_of :video
 
 
 
   #validates :address, :city, :state, presence: true
   def order_sales_relationship
     Order.where(id: SalesUpload.where(:order_id))
-
-
   end
+
 
   belongs_to :listing
   belongs_to :buyer, class_name: "User"

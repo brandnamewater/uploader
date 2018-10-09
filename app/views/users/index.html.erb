@@ -1,0 +1,34 @@
+<% if current_user.try(:admin?) %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th class="center">#</th>
+      <th class="center">Name</th>
+      <th class="center">Status</th>
+      <th class="center">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+      <% @users.each do |user| %>
+      <tr>
+        <td><%= user.id %>
+        <td><%= user.email %>
+        <td><%= user.approved %>
+        <td>
+          <% if user.approved == true %>
+            <p>Approved</p>
+            <% else %>
+            <%= form_for user, remote: true do |f| %>
+            <%= f.hidden_field :approved, value: true %>
+            <%= f.submit "Approve User", confirm: "Are you sure?", class: "form-control" %>
+        <% end %>
+      <% end %>
+      </td>
+    </tr>
+  </tbody>
+  <% end %>
+</table>
+
+
+<% end %>

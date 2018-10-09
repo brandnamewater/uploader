@@ -54,7 +54,13 @@ end
     @order = Order.new
     @listing = Listing.find(params[:listing_id])
     #@order = Order.find(params[:order_id])
+    respond_to do |format|
 
+      format.html
+
+      format.js
+
+    end
   end
 
   # GET /orders/1/edit
@@ -80,12 +86,21 @@ end
 
     respond_to do |format|
       if @order.save
+        if user_signed_in?
         format.html { redirect_to @order, notice: 'Order was successfully created.' }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
+
+      if buyer_signed_in?
+      format.html { redirect_to @listing, notice: 'Order was successfully created.' }
+      format.json { render :show, status: :created, location: @order }
+    else
+      format.html { render :new }
+      format.json { render json: @order.errors, status: :unprocessable_entity }
+    end
     end
   end
 
@@ -111,6 +126,7 @@ end
       end
     end
   end
+end
 
   # DELETE /orders/1
   # DELETE /orders/1.json
@@ -130,7 +146,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:name, :address, :city, :state, :image, :video)
+      params.require(:order).permit(:name, :address, :city, :state, :image, :video, :description, :order_status)
     end
 
     def deny_to_visitors

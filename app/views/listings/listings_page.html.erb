@@ -25,7 +25,9 @@
 
     <div class="row">
       <% @listings.each do |listing| %>
-          <div class="col-md-3">
+            <div class="card listing" style="width:250px">
+              <img class="card-img-top" src="img_avatar1.png" alt="Card image">
+
             <%= link_to image_tag(listing.image_url(:thumb)), listing %>
             <div class="caption">
               <h3><%= listing.name %></h3>
@@ -36,8 +38,15 @@
         <% end %>
       </div>
 
-    </div>
-  <% if (user_signed_in?) %>
-    <%= link_to 'New Listing', new_listing_path %>
-  <% end %>
+
+</div>
+</div>
+
+<div class="card" style="width:500px">
+  <img class="card-img-top" src="img_avatar1.png" alt="Card image">
+  <div class="card-img-overlay">
+    <h4 class="card-title">John Doe</h4>
+    <p class="card-text">Some example text.</p>
+    <a href="#" class="btn btn-primary">See Profile</a>
+  </div>
 </div>
