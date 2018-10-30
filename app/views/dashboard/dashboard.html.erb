@@ -22,11 +22,12 @@
             <div class="sidebar-wrapper">
                 <div class="logo">
                     <a href="/dashboard" class="simple-text">
-                      SHOUTS.tv
+                      yoyo
 
                     </a>
                 </div>
                 <ul class="nav">
+                  <% if user_signed_in? || current_user.try(:admin?) %>
                     <li class="nav-item active">
                         <a class="nav-link" href="/dashboard">
                             <i class="nc-icon nc-chart-pie-35"></i>
@@ -34,15 +35,22 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="/shouts">
+                        <a class="nav-link" href="/yoyo">
                             <i class="nc-icon nc-circle-09"></i>
-                            <p>Shouts</p>
+                            <p>yoyo</p>
                         </a>
                     </li>
                     <li>
                         <a class="nav-link" href="/seller">
                             <i class="nc-icon nc-notes"></i>
                             <p>Manage Listing(s)</p>
+                        </a>
+                    </li>
+                    <% end %>
+                    <li>
+                        <a class="nav-link" href="/purchases">
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>Purchases</p>
                         </a>
                     </li>
                     <li>
@@ -54,6 +62,9 @@
                 </ul>
             </div>
         </div>
+
+        <% if user_signed_in? || current_user.try(:admin?) %>
+
         <div class="main-panel">
             <!-- Navbar -->
 
@@ -64,7 +75,7 @@
                       <div class="col-md-4">
                           <div class="card ">
                               <div class="card-header ">
-                                  <h4 class="card-title">Shouts Analytics</h4>
+                                  <h4 class="card-title">yoyo Analytics</h4>
                                   <p class="card-category">Monthly</p>
                               </div>
                               <div class="card-body ">
@@ -72,7 +83,7 @@
                                   <thead>
                                     <tr>
                                       <th class="center">Month</th>
-                                      <th class="center">Amount of Shouts</th>
+                                      <th class="center">Amount of yoyo</th>
                                       <th class="center">Average Response Time</th>
                                     </tr>
                                   </thead>
@@ -81,7 +92,7 @@
                                     <tr>
                                         <td><%= month.strftime("%B") %></td>
                                         <td class="center"><%= orders.count %></td>
-                                        <td class="center"><%= (orders.sum { |order| order.updated_at.day - order.created_at.day } / orders.count) %> Days</td>
+                                            <td class="center"><%= (orders.sum { |order| order.updated_at.day - order.created_at.day } / orders.count) %> Days</td>
                                       </td>
                                     </tr>
                                     <% end %>
@@ -99,8 +110,8 @@
                         <div class="col-md-8">
                             <div class="card scroll">
                                 <div class="card-header ">
-                                    <h4 class="card-title">Your Shouts</h4>
-                                    <p class="card-category">Here's your Shouts!</p>
+                                    <h4 class="card-title">Monthly</h4>
+                                    <p class="card-category">Monthly yoyo chart</p>
                                 </div>
                                 <div class="card-body ">
                                   <div data-spy="scroll" data-offset="0">
@@ -119,7 +130,7 @@
                         <div class="col-md-4">
                             <div class="card ">
                                 <div class="card-header ">
-                                    <h4 class="card-title">Shouts Analytics</h4>
+                                    <h4 class="card-title">yoyo Analytics</h4>
                                     <p class="card-category">Daily</p>
                                 </div>
                                 <div class="card-body ">
@@ -127,7 +138,7 @@
                                     <thead>
                                       <tr>
                                         <th class="center">Month</th>
-                                        <th class="center">Amount of Shouts</th>
+                                        <th class="center">Amount of yoyo</th>
                                       </tr>
                                     </thead>
                                     <% @orders_day.each do |day, orders| %>
@@ -152,8 +163,8 @@
                         <div class="col-md-8">
                             <div class="card">
                                 <div class="card-header ">
-                                    <h4 class="card-title">Daily Statistics Chart</h4>
-                                    <p class="card-category">Your Shouts!</p>
+                                    <h4 class="card-title">Daily</h4>
+                                    <p class="card-category">Daily yoyo chart</p>
                                 </div>
                                 <div class="card-body ">
                                   <%= line_chart @orders_a.group_by_day(:created_at).count %>
@@ -245,6 +256,7 @@
     </div>
 </div>
  -->
+ <% end %>
 </body>
 
 <script type="text/javascript">

@@ -31,6 +31,8 @@ end
   def purchases
     @orders = Order.all.where(buyer: current_user || current_buyer) #|| @orders = Order.all.where(buyer: current_buyer)
   #  @orders = Order.all.where(buyer: current_buyer)
+
+
   end
 
 
@@ -81,28 +83,44 @@ end
     #@order.buyer_id = (current_buyer.id || current_user.id)
     @order.seller_id = @seller.id
 
+    @amount = 500
+    token = params[:stripeToken]
+    payment_form = params[:payment_form]
 
+    @charge = Stripe::Charge.create({
+      :source  => 'tok_visa',
+      :amount      => @amount,
+      :description => 'Rails Stripe customer',
+      :currency    => 'usd'
+    })
 
+  rescue Stripe::CardError => e
+    flash[:error] = e.message
+    redirect_to new_charge_path
 
     respond_to do |format|
       if @order.save
         if user_signed_in?
-        format.html { redirect_to @order, notice: 'Order was successfully created.' }
-        format.json { render :show, status: :created, location: @order }
-      else
-        format.html { render :new }
-        format.json { render json: @order.errors, status: :unprocessable_entity }
+          @user = current_user
+          OrderMailer.order_email(@user, @order).deliver
+          format.html { redirect_to @order, notice: 'Order was successfully created.' }
+          format.json { render :show, status: :created, location: @order }
+          else
+            format.html { render :new }
+            format.json { render json: @order.errors, status: :unprocessable_entity }
+          end
+          if buyer_signed_in?
+            @user = current_buyer
+            OrderMailer.order_email(@user, @order).deliver
+            format.html { redirect_to @listing, notice: 'Order was successfully created.' }
+            format.json { render :show, status: :created, location: @order }
+          else
+            format.html { render :new }
+            format.json { render json: @order.errors, status: :unprocessable_entity }
+          end
+        end
       end
-
-      if buyer_signed_in?
-      format.html { redirect_to @listing, notice: 'Order was successfully created.' }
-      format.json { render :show, status: :created, location: @order }
-    else
-      format.html { render :new }
-      format.json { render json: @order.errors, status: :unprocessable_entity }
     end
-    end
-  end
 
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
@@ -110,23 +128,22 @@ end
     respond_to do |format|
       if @order.update(order_params)
         if user_signed_in?
-        format.html { redirect_to @order, notice: 'Shout was successfully uploaded.' }
-        format.json { render :show, status: :ok, location: @order }
-      else
-        format.html { render :edit }
-        format.json { render json: @order.errors, status: :unprocessable_entity }
-      end
-      if buyer_signed_in?
-      format.html { redirect_to @order, notice: 'Order was successfully updated.' }
-      format.json { render :show, status: :ok, location: @order }
-    else
-      format.html { render :edit }
-      format.json { render json: @order.errors, status: :unprocessable_entity }
-    end
+          format.html { redirect_to @order, notice: 'Order was successfully uploaded.' }
+          format.json { render :show, status: :ok, location: @order }
+        else
+          format.html { render :edit }
+          format.json { render json: @order.errors, status: :unprocessable_entity }
+        end
+        if buyer_signed_in?
+          format.html { redirect_to @order, notice: 'Order was successfully updated.' }
+          format.json { render :show, status: :ok, location: @order }
+        else
+          format.html { render :edit }
+          format.json { render json: @order.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
-end
 
   # DELETE /orders/1
   # DELETE /orders/1.json

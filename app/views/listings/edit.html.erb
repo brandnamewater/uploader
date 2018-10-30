@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<% if user_signed_in? || current_user.try(:admin?) %>
+
 <html lang="en">
 
 <head>
@@ -23,7 +25,7 @@
             <div class="sidebar-wrapper">
                 <div class="logo">
                     <a href="/dashboard" class="simple-text">
-                      SHOUTS.tv
+                      yoyo.tv
 
                     </a>
                 </div>
@@ -35,9 +37,9 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="/shouts">
+                        <a class="nav-link" href="/yoyo">
                             <i class="nc-icon nc-circle-09"></i>
-                            <p>Shouts</p>
+                            <p>yoyo</p>
                         </a>
                     </li>
                     <li>
@@ -72,8 +74,8 @@
                         <div class="col-md-12">
                             <div class="card scroll">
                                 <div class="card-header ">
-                                    <h4 class="card-title">Your Shouts</h4>
-                                    <p class="card-category">Here's your Shouts!</p>
+                                    <h4 class="card-title">Your yoyo</h4>
+                                    <p class="card-category">Here's your yoyo!</p>
                                 </div>
                                 <div class="card-body ">
                                   <div data-spy="scroll" data-offset="0">
@@ -214,3 +216,4 @@
 </script>
 
 </html>
+<% end %>

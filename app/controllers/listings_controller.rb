@@ -2,6 +2,33 @@ class ListingsController < ApplicationController
   before_action :set_listing, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :check_user, only: [:edit, :update, :destroy]
+  # attr_accessor :new_category_name
+
+  def payment
+
+    # Amount in cents
+    @amount = (@listing.price)
+    token = params[:stripeToken]
+    payment_form = params[:payment_form]
+
+    # customer = Stripe::Customer.create(
+    #   :email => params[:stripeEmail],
+    #
+    # )
+
+    charge = Stripe::Charge.create({
+      :source  => params[:stripeToken],
+      # :customer    => customer.id,
+      :amount      => @amount,
+      :description => 'Rails Stripe customer',
+      :currency    => 'usd'
+    })
+
+    rescue Stripe::CardError => e
+      flash[:error] = e.message
+      redirect_to new_charge_path
+
+  end
 
   def seller
     @listings = Listing.where(user: current_user) #, created_at: :desc)
@@ -9,27 +36,94 @@ class ListingsController < ApplicationController
 
   def listings_page
     @listings = Listing.all
-  if params[:search]
-    @listings = Listing.search(params[:search]).order(created_at: :desc)
-  else
-    @listings = Listing.all.order(created_at: :desc)
-end
-end
+
+    if params[:search]
+      @listings = Listing.search(params[:search]).order(created_at: :desc)
+    else
+      @listings = Listing.all.order(created_at: :desc)
+    end
+
+    @categories = Category.all
+    # if params[:category_id]
+    #   @listings = Listing.where(:category_id => params[:category_id])
+    # else
+    #   @listings = Listing.all
+    # end
+
+  end
+
+  def carousel
+    @listings = Listing.all
+    if params[:search]
+      @listings = Listing.search(params[:search]).order(created_at: :desc)
+    else
+      @listings = Listing.all.order(created_at: :desc)
+    end
+    @listings_category = Listing.find(params[:category])
+  end
 
   # GET /listings
   # GET /listings.json
   def index
     @listings = Listing.all #.order(created_at: :desc)
+
+    if params[:search]
+      @listings = Listing.search(params[:search]).order(created_at: :desc)
+    elsif params[:category]
+      @listings = Category.find(params[:category]).listings
+    else
+      @listings = Listing.all.order(created_at: :desc)
+    end
+    @categories = Category.all
+
+
   end
 
   # GET /listings/1
   # GET /listings/1.json
   def show
+    @orders = Order.all.where(seller: current_user).paginate(:page => params[:page], :per_page => 15) || @orders = Order.all.where(seller: current_buyer).paginate(:page => params[:page], :per_page => 15)
+
+
+    @orders_a = Order.all.where(seller: current_user) || @orders = Order.all.where(seller: current_buyer)
+    @orders_month = @orders_a.all.group_by { |mon|  mon.created_at.beginning_of_month }
+    @orders_day = @orders_a.all.group_by { |day|  day.created_at.beginning_of_day }
+    @orders_date = @orders_a.all.group_by { |day|  day.created_at.beginning_of_day }
+
+    # @amount = 500
+    # token = params[:stripeToken]
+    # payment_form = params[:payment_form]
+    #
+    # # customer = Stripe::Customer.create(
+    # #   :email => params[:stripeEmail],
+    # #
+    # # )
+    #
+    # charge = Stripe::Charge.create({
+    #   :source  => params[:stripeToken],
+    #   # :customer    => customer.id,
+    #   :amount      => @amount,
+    #   :description => 'Rails Stripe customer',
+    #   :currency    => 'usd'
+    # })
+    #
+    # rescue Stripe::CardError => e
+    #   flash[:error] = e.message
+    #   redirect_to new_charge_path
+
   end
 
   # GET /listings/new
   def new
     @listing = Listing.new
+    # @categories = Category.all
+
+    # 3.times do
+    #   @listing.categories.build
+    # end
+
+
+    # @categories = Category.all.map{|c| [ c.name, c.id ] }
   end
 
   # GET /listings/1/edit
@@ -85,7 +179,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def listing_params
-      params.require(:listing).permit(:name, :description, :price, :image)
+      params.require(:listing).permit(:attr1, :name, :description, :price, :image, {category_ids: []})
     end
 
     def check_user

@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   #resources :sales_uploads
   devise_for :buyers
   resources :orders
-  devise_for :users
+  devise_for :users, controllers: { confirmations: 'confirmations' }
 
   resources :users
 
@@ -14,13 +14,30 @@ Rails.application.routes.draw do
     resources :orders
 end
 
+  # resources :listings do
+  #   resources :charges
+  # end
+  resources :orders do
+    resource :charge, only: [:new, :create, :show]
+  end
 
   get 'seller' => "listings#seller"
-  #get 'sales' => "orders#sales"
-  # get 'sales' => "sales_uploads#sales"
-  # post 'sales' => "sales_uploads#sales"
+
+  resource :orders
+  resolve('Charge') { [:charges] }
 
 
+  # resource :charges
+  # resolve('Charge') { [:orders] }
+
+  resources :charges
+
+
+
+
+  # resources :orders do
+  #   resources :charges
+  # end
 
 
   #new_order_sales_upload post '/orders/:order_ids(.:format) sales_uploads#new'
@@ -34,12 +51,20 @@ end
 
 
   get 'dashboard' => "dashboard#dashboard"
-  get 'shouts' => "dashboard#tables"
+  get 'yoyo' => "dashboard#tables"
   get 'charts' => "dashboard#charts"
 
 get 'auth' => "users#index"
 
+get 'stripe' => "listings#stripe"
 
+# post 'charge' => "layouts#charges"
+#
+# post 'charge' => "listings#show"
+
+
+
+  get 'car' => "listings#carousel"
 
   root to: "listings#index"
 

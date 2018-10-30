@@ -1,16 +1,297 @@
-<div class="jumbotron">
-  <div class="white">
-    </br>
-  </br>
-</br>
-</br>
-<div class="center">
-    <h1 class="display-4">HELLO</h1>
-    <p>It uses utility classes for typography and spacing to space content out within the larger
-      container.</p>
-    <p class="lead">
-      <a class="btn btn-primary btn-lg" href="/talent" role="button">Listings</a>
-    </p>
+<!-- <div class="listing"> -->
+
+<!-- Load icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+</style>
+</head>
+<div class="body-listing">
+
+
+
+<div class="row">
+  <div class="top">
+    <form class="example">
+      <!-- <input class="searchTerm"> -->
+      <%= form_tag(listings_path, :method => "get", id: "search-form") do %>
+      <%= text_field_tag :search, params[:search], class: "example-form", placeholder: " Search Talent By Name..." %>
+      <button type="submit search-submit"><i class="fa fa-search"></i></button>
+
+    </form>
+    <% end %>
   </div>
 </div>
+
+
+
+<div class="btn ripple-effect btn-primary">Button</div>
+
+
+<div class="btn ripple-effect btn-cat-2">Button</div>
+
+<div class="row">
+  <div class="left">
+    <h2>Categories</h2>
+    <div class="categories-">
+
+      <% @categories.each do |cat| %>
+        <%= link_to cat.name, listings_path(:category => cat), class: "btn ripple-effect btn-cat-2" %>
+      <% end %>
+      <div class="btn ripple-effect btn-cat-2">Button</div>
+
+  </div>
+
+<!--
+    <div class="categories-2">
+      <% @categories.each do |cat| %>
+        <div id="btn-text"><%= link_to cat.name, controller: 'listings', action: 'show', id: cat.id, class: 'btn btn-primary-2' %></div>
+      <% end %>
+  </div>
+
+<div class="categories-2">
+  <% @categories.each do |cat| %>
+<%= link_to cat.name, controller: 'listings', action: 'show', id: cat.id, class: 'btn btn-primary-2' %>
+  <% end %>
+</div> -->
 </div>
+
+
+  <div class="right">
+    <div class="center">
+    <h1>yoyo Talent</h1>
+  </div>
+
+<div class="product-">
+  <div class="row">
+      <% @listings.each do |listing| %>
+      <div class="image-circle">
+        <div class="listing-page-images">
+            <%= link_to image_tag(listing.image_url(:listing_index_4)), listing %>
+          </div>
+            <div class="text-over">
+              <p><%= link_to listing.user.name, listing %></p>
+            </div>
+          </div>
+
+        <% end %>
+    </div>
+
+  <div class="row">
+      <% @listings.each do |listing| %>
+      <div class="image-circle">
+        <div class="card listing-page-images-2">
+          <%= link_to image_tag(listing.image_url(:thumb)), listing %>
+            <div class="card-img-overlay text-over">
+              <p><%= link_to listing.user.name, listing %></p>
+            </div>
+          </div>
+        </div>
+
+        <% end %>
+      </div>
+    </div>
+</div>
+
+
+
+  <script>
+  function myFunction() {
+      var input, filter, ul, li, a, i;
+      input = document.getElementById("mySearch");
+      filter = input.value.toUpperCase();
+      ul = document.getElementById("myMenu");
+      li = ul.getElementsByTagName("li");
+      for (i = 0; i < li.length; i++) {
+          a = li[i].getElementsByTagName("a")[0];
+          if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+              li[i].style.display = "";
+          } else {
+              li[i].style.display = "none";
+          }
+      }
+  }
+
+
+
+  // $('.example-form').on('click', function(e){
+  //     e.preventDefault();
+  //     $(this).toggleClass('myClickState');
+  //     });
+  //
+  //  $('.example-form').on('mouseenter', function(e){
+  //     e.preventDefault();
+  //     $(this).toggleClass('myClickState');
+  //     });
+  //
+  //  $('.example-form').on('mouseleave', function(e){
+  //     e.preventDefault();
+  //     $( this ).css("border-color","rgba(0, 0, 0, .075)");
+  //     });
+
+
+
+
+//
+//     $(document).ready(function(){
+//   $( ".example-form" )
+//   .onclick(function(e) {
+//     $( this ).css("border","red solid 1px");
+//   })
+// 	$( ".example-form" )
+//   .mouseenter(function() {
+//     $( this ).css("border","red solid 1px");
+//   })
+//   .mouseleave(function() {
+//     $( this ).css("border-color","rgba(0, 0, 0, .075)");
+//   });
+// });
+// });
+
+// $(document).ready(function(){
+//
+//   $( ".example-form" )
+//   .mouseenter(function() {
+//   $( this ).css("border","red solid 1px");
+//   })
+//       .mouseleave(function() {
+//   $( this ).css("border-color","rgba(0, 0, 0, .075)");
+//   });
+// });
+
+// $('.example-form').on('click mouseenter', function(e){
+// 	e.preventDefault();
+// 	$(this).css("border","red solid 1px");
+// }).on('mouseleave', function(e){
+// 	e.preventDefault();
+// 	$(this).css("border-color","rgba(0, 0, 0, .075)");
+// });
+
+
+// $(document).ready(function(){
+//     $('.example-form')
+//         .focusout(function(){
+//             $( this ).css("border","rgba(0, 0, 0, .075) solid 1px");
+//         })
+//         .click(function(){
+//             $( this ).css("border","red solid 1px");
+//         })
+//         .mouseenter(function() {
+//             $( this ).css("border","red solid 1px");
+//         })
+//         .mouseleave(function() {
+//             $( this ).css("border-color","rgba(0, 0, 0, .075)");
+//         });
+// });
+
+$(document).ready(function(){
+    $('.example-form')
+        .focusout(function(){
+            $( this ).removeClass('inputactive');
+        })
+        .click(function(){
+            $( this ).addClass('inputactive');
+        })
+        .mouseenter(function() {
+            $( this ).addClass('mouseover');
+        })
+        .mouseleave(function() {
+            $( this ).removeClass('mouseover');
+        });
+});
+
+
+
+
+
+
+
+//
+// $("btn-primary").click(function (e) {
+//
+//   // Remove any old one
+//   $(".ripple").remove();
+//
+//   // Setup
+//   var posX = $(this).offset().left,
+//       posY = $(this).offset().top,
+//       buttonWidth = $(this).width(),
+//       buttonHeight =  $(this).height();
+//
+//   // Add the element
+//   $(this).prepend("<span class='ripple'></span>");
+//
+//
+//  // Make it round!
+//   if(buttonWidth >= buttonHeight) {
+//     buttonHeight = buttonWidth;
+//   } else {
+//     buttonWidth = buttonHeight;
+//   }
+//
+//   // Get the center of the element
+//   var x = e.pageX - posX - buttonWidth / 2;
+//   var y = e.pageY - posY - buttonHeight / 2;
+//
+//
+//   // Add the ripples CSS and start the animation
+//   $(".ripple").css({
+//     width: buttonWidth,
+//     height: buttonHeight,
+//     top: y + 'px',
+//     left: x + 'px'
+//   }).addClass("rippleEffect");
+// });
+
+
+// Ripple-effect animation
+(function($) {
+    $(".ripple-effect").click(function(e){
+        var rippler = $(this);
+
+        // create .ink element if it doesn't exist
+        if(rippler.find(".ink").length == 0) {
+            rippler.append("<span class='ink'></span>");
+        }
+
+        var ink = rippler.find(".ink");
+
+        // prevent quick double clicks
+        ink.removeClass("animate");
+
+        // set .ink diametr
+        if(!ink.height() && !ink.width())
+        {
+            var d = Math.max(rippler.outerWidth(), rippler.outerHeight());
+            ink.css({height: d, width: d});
+        }
+
+        // get click coordinates
+        var x = e.pageX - rippler.offset().left - ink.width()/2;
+        var y = e.pageY - rippler.offset().top - ink.height()/2;
+
+        // set .ink position and add class .animate
+        ink.css({
+          top: y+'px',
+          left:x+'px'
+        }).addClass("animate");
+    })
+})(jQuery);
+  </script>
+
+
+
+</div>
+</html>

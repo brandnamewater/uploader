@@ -22,7 +22,7 @@
         <th class="center">Talent Name</th>
         <th class="center">Price</th>
         <th class="center">Date Scheduled</th>
-        <th class="center">Download Your Shout!</th>
+        <th class="center">Download Your file!</th>
         <th class="center">Action</th>
       </tr>
     </thead>
@@ -34,7 +34,13 @@
         <td class="center"><%= order.created_at.strftime("%B %-d, %Y") %></td>
         <td class="center">
 
-
+          <% if order.order_status == false %>
+          <p>Canceled or Expired</p>
+            <% elsif order.video.present? %>
+              <%= link_to "Download it", order.video.url %>
+                 <% else %>
+                 <p>Not Yet Uploaded</p>
+          <% end %>
 
 
         </td>

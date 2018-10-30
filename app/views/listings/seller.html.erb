@@ -59,6 +59,8 @@
 </html>
 
 <!DOCTYPE html>
+<% if user_signed_in? || current_user.try(:admin?) %>
+
 <html lang="en">
 
 <head>
@@ -85,7 +87,7 @@
             <div class="sidebar-wrapper">
                 <div class="logo">
                     <a href="/dashboard" class="simple-text">
-                      SHOUTS.tv
+                      yoyo.tv
 
                     </a>
                 </div>
@@ -97,9 +99,9 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="/shouts">
+                        <a class="nav-link" href="/yoyo">
                             <i class="nc-icon nc-circle-09"></i>
-                            <p>Shouts</p>
+                            <p>yoyo</p>
                         </a>
                     </li>
                     <li>
@@ -294,3 +296,4 @@
 
 
 </html>
+<% end %>

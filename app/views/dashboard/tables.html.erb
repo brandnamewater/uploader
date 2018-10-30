@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<% if user_signed_in? || current_user.try(:admin?) %>
+
 <html lang="en">
 
 <head>
@@ -23,7 +25,7 @@
             <div class="sidebar-wrapper">
                 <div class="logo">
                     <a href="/dashboard" class="simple-text">
-                        SHOUTS.tv
+                        yoyo.tv
                     </a>
                 </div>
                 <ul class="nav">
@@ -34,9 +36,9 @@
                         </a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="/shouts">
+                        <a class="nav-link" href="/yoyo">
                             <i class="nc-icon nc-circle-09"></i>
-                            <p>Shouts</p>
+                            <p>yoyo</p>
                         </a>
                     </li>
                     <li>
@@ -66,18 +68,18 @@
                         <div class="col-md-12">
                             <div class="card strpied-tabled-with-hover">
                                 <div class="card-header ">
-                                    <h4 class="card-title">Your Shouts</h4>
-                                    <p class="card-category">You can view and take actions on your Shouts here.</p>
+                                    <h4 class="card-title">Your yoyo</h4>
+                                    <p class="card-category">You can view and take actions on your yoyo here.</p>
                                 </div>
                                 <div class="card-body table-full-width table-responsive">
                                     <table class="table table-hover table-striped">
                                       <table class="table table-hover">
                                         <thead>
                                           <tr>
-                                            <th class="center">Customer</th>
+                                            <th class="text-xs-center">Customer</th>
                                             <th class="center">Price</th>
                                             <th class="center">Date</th>
-                                            <th class="center">View / Upload Shout</th>
+                                            <th class="center">View / Upload Order</th>
                                             <th class="center">Upload Status</th>
                                             <th class="center">Action</th>
                                           </tr>
@@ -104,15 +106,17 @@
 
                                                     <% if order.order_status == false %>
                                                       cancelled
-                                                      <% else %>
-                                                      <%= form_for order, remote: true do |f| %>
-                                                      <%= f.hidden_field :order_status, value: false %>
-                                                      <%= f.button type:'submit', data: {confirm: "Are you sure you want to cancel this order? You cannot undo this"}, class: "btn btn-danger-1" do %>
-                                                      <i class="fa fa-times" aria-hidden="true"></i>
-                                                      <% end %>
+                                                      <% elsif order.video.present? %>
+                                                        <i class="fa fa-times" aria-hidden="true" style="color:grey"></i>
+                                                          <% else %>
+                                                            <%= form_for order, remote: true do |f| %>
+                                                            <%= f.hidden_field :order_status, value: false %>
+                                                            <%= f.button type:'submit', data: {confirm: "Are you sure you want to cancel this order? You cannot undo this"}, class: "btn btn-danger-1" do %>
+                                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                                        <% end %>
+                                                    <% end %>
                                                   <% end %>
-                                                <% end %>
-                                                </td>
+                                                  </td>
 
                                           </tr>
 
@@ -126,8 +130,8 @@
                             <div class="col-md-6">
                                 <div class="card ">
                                     <div class="card-header ">
-                                        <h4 class="card-title">Shouts History</h4>
-                                        <p class="card-category">Your completed & uploaded Shouts</p>
+                                        <h4 class="card-title">yoyo History</h4>
+                                        <p class="card-category">Your completed & uploaded yoyo</p>
                                     </div>
                                     <div class="card-body">
                                       <table class="table table-hover">
@@ -136,7 +140,7 @@
                                             <th class="center">Customer</th>
                                             <th class="center">Price</th>
                                             <th class="center">Date</th>
-                                            <th class="center">View Shout</th>
+                                            <th class="center">View Order</th>
                                             <th class="center">Status</th>
                                           </tr>
                                         </thead>
@@ -177,8 +181,8 @@
                                 <div class="col-md-6">
                                     <div class="card ">
                                         <div class="card-header ">
-                                            <h4 class="card-title">Shouts to Upload</h4>
-                                            <p class="card-category">Your Shouts that need to be Uploaded</p>
+                                            <h4 class="card-title">yoyo to Upload</h4>
+                                            <p class="card-category">Your yoyo that need to be Uploaded</p>
                                         </div>
                                         <div class="card-body ">
                                           <table class="table table-hover">
@@ -187,7 +191,7 @@
                                                 <th class="center">Customer</th>
                                                 <th class="center">Price</th>
                                                 <th class="center">Date</th>
-                                                <th class="center">View Shout</th>
+                                                <th class="center">View Order</th>
                                                 <th class="center">Upload</th>
                                               </tr>
                                             </thead>
@@ -305,5 +309,5 @@
 </body>
 <!--   Core JS Files   -->
 
-
+<% end %>
 </html>

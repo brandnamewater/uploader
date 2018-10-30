@@ -3,7 +3,9 @@ class Order < ApplicationRecord
   mount_uploader :video, VideoUploader
   serialize :video, JSON # If you use SQLite, add this line.
 
-
+  # def set_success(format, opts)
+  #   self.success = true
+  # end
   #validates_presence_of :video
 
 

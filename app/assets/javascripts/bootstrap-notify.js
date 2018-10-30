@@ -20,7 +20,7 @@
  * License: MIT License
  * Website: https://github.com/mouse0270/bootstrap-growl
  */
-
+used
 /* global define:false, require: false, jQuery:false */
 
 (function(factory) {

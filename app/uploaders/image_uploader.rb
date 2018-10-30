@@ -5,8 +5,8 @@ class ImageUploader < CarrierWave::Uploader::Base
   # include CarrierWave::RMagick
 
   # Choose what kind of storage to use for this uploader:
-  storage :file
-  # storage :fog
+  storage :aws
+    # storage :fog
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
@@ -35,6 +35,26 @@ class ImageUploader < CarrierWave::Uploader::Base
   version :thumb do
    process resize_to_fill: [150, 150]
    end
+
+  version :listing do
+    process resize_to_fill: [414, 736]
+  end
+
+  version :listing_index do
+    process resize_to_fill: [140,250]
+  end
+
+  version :listing_index_2 do
+    process resize_to_fill: [450,736]
+  end
+
+  version :listing_index_3 do
+    process resize_to_fill: [150,250]
+  end
+
+  version :listing_index_4 do
+    process resize_to_fill: [200,300]
+  end
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:

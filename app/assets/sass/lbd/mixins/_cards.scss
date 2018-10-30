@@ -1,4 +1,4 @@
-@mixin filter($color){
+@mixin filter($color){ 
     @if $color == #FFFFFF{
          background-color: rgba($color,.91);
     } @else {

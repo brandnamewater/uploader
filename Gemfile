@@ -1,14 +1,20 @@
 #source 'https://code.stripe.comg'
 
+gem 'dotenv-rails', groups: [:development, :test]
+
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-gem 'stripe'
+
 
 ruby '2.5.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.1'
+
+gem 'stripe'
+
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use Puma as the app server
@@ -37,6 +43,12 @@ gem 'groupdate'
 gem 'devise'
 
 gem 'carrierwave', '~> 1.0'
+
+gem 'carrierwave-aws'
+
+gem 'carrierwave-ffmpeg'
+
+gem 'carrierwave-video'
 
 gem 'bootstrap', '~> 4.1.3'
 
