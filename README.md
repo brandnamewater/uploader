@@ -25,3 +25,4 @@ Things you may want to cover:
 # digital-commerce-rough
 # digital-commerce-rough
 # stripe_test_2
+# uploader
