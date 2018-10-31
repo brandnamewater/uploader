@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
   #before_action :authenticate_user! || before_action :authenticate_buyer
-  before_action :deny_to_visitors
+  # before_action :deny_to_visitors
 
   def order_and_sales_upload
     #Order.where(:id).joins(:sales_upload).where("sales_upload.sorder_id = ?")
@@ -83,20 +83,24 @@ end
     #@order.buyer_id = (current_buyer.id || current_user.id)
     @order.seller_id = @seller.id
 
-    @amount = 500
-    token = params[:stripeToken]
-    payment_form = params[:payment_form]
+    if @order.valid?
+      begin
+        @amount = 500
+        token = params[:stripeToken]
+        payment_form = params[:payment_form]
 
-    @charge = Stripe::Charge.create({
-      :source  => 'tok_visa',
-      :amount      => @amount,
-      :description => 'Rails Stripe customer',
-      :currency    => 'usd'
-    })
+        charge = Stripe::Charge.create({
+          :source  => 'tok_visa',
+          :amount      => @amount,
+          :description => 'Rails Stripe customer',
+          :currency    => 'usd'
+        })
 
-  rescue Stripe::CardError => e
-    flash[:error] = e.message
-    redirect_to new_charge_path
+      rescue Stripe::CardError => e
+        flash[:error] = e.message
+        redirect_to new_charge_path
+      end
+    end
 
     respond_to do |format|
       if @order.save

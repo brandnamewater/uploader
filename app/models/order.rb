@@ -9,8 +9,8 @@ class Order < ApplicationRecord
   #validates_presence_of :video
 
 
+  validates :name, presence: true
 
-  #validates :address, :city, :state, presence: true
   def order_sales_relationship
     Order.where(id: SalesUpload.where(:order_id))
   end
@@ -23,5 +23,8 @@ class Order < ApplicationRecord
   #has_one :sales_upload
   #has_one :sales_upload, :as => :video
   #has_many :sales_uploads
+
+
+
 
 end

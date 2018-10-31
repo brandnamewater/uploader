@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_18_094742) do
+ActiveRecord::Schema.define(version: 2018_10_31_013638) do
 
   create_table "buyers", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 2018_10_18_094742) do
     t.string "video"
     t.string "name"
     t.boolean "order_status", default: true, null: false
+    t.string "stripe_customer_token"
   end
 
   create_table "sales_uploads", force: :cascade do |t|
