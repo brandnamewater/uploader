@@ -1,10 +1,18 @@
 Rails.application.routes.draw do
+
+  # resources :stripe_accounts
+  # resources :user_listings
+  mount StripeEvent::Engine, at: '/stripe-events' # provide a custom path
   #resources :sales_uploads
   devise_for :buyers
   resources :orders
   devise_for :users, controllers: { confirmations: 'confirmations' }
 
   resources :users
+
+  resources :users do
+    resources :stripe_accounts
+  end
 
 
 
@@ -14,25 +22,32 @@ Rails.application.routes.draw do
     resources :orders
 end
 
+resources :bank_accounts
+
+
+  get 'stripe_' => "stripe_account#create"
+
+  get 'stripe_new' => "stripe_account#new"
+
   # resources :listings do
   #   resources :charges
   # end
-  resources :orders do
-    resource :charge, only: [:new, :create, :show]
-  end
+  # resources :orders do
+  #   resource :charge, only: [:new, :create, :show]
+  # end
 
   get 'seller' => "listings#seller"
-
-  resource :orders
-  resolve('Charge') { [:charges] }
-
+  #
+  # resource :orders
+  # resolve('Charge') { [:charges] }
 
   # resource :charges
   # resolve('Charge') { [:orders] }
 
-  resources :charges
+  # resources :charges
 
 
+  # get 'stripe_accounts/full' => "stripe_accounts#full"
 
 
   # resources :orders do
@@ -68,5 +83,7 @@ get 'stripe' => "listings#stripe"
 
   root to: "listings#index"
 
+
+# get '/:user_link', to: 'user_listings#show'
 
 end

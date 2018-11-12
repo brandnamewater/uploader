@@ -15,6 +15,8 @@ gem 'rails', '~> 5.2.1'
 
 gem 'stripe'
 
+gem 'stripe_event'
+
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use Puma as the app server

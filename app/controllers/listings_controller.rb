@@ -90,26 +90,9 @@ class ListingsController < ApplicationController
     @orders_day = @orders_a.all.group_by { |day|  day.created_at.beginning_of_day }
     @orders_date = @orders_a.all.group_by { |day|  day.created_at.beginning_of_day }
 
-    # @amount = 500
-    # token = params[:stripeToken]
-    # payment_form = params[:payment_form]
-    #
-    # # customer = Stripe::Customer.create(
-    # #   :email => params[:stripeEmail],
-    # #
-    # # )
-    #
-    # charge = Stripe::Charge.create({
-    #   :source  => params[:stripeToken],
-    #   # :customer    => customer.id,
-    #   :amount      => @amount,
-    #   :description => 'Rails Stripe customer',
-    #   :currency    => 'usd'
-    # })
-    #
-    # rescue Stripe::CardError => e
-    #   flash[:error] = e.message
-    #   redirect_to new_charge_path
+    @order = @listing.orders.new()
+
+
 
   end
 

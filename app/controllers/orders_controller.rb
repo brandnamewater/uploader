@@ -79,48 +79,100 @@ end
 
     @order.listing_id = @listing.id
     @order.buyer_id = current_user.id
-    #@order.buyer_id = current_buyer.id
-    #@order.buyer_id = (current_buyer.id || current_user.id)
+      #@order.buyer_id = current_buyer.id
+      #@order.buyer_id = (current_buyer.id || current_user.id)
     @order.seller_id = @seller.id
+    @order.order_price = @listing.price
 
-    if @order.valid?
-      begin
-        @amount = 500
-        token = params[:stripeToken]
-        payment_form = params[:payment_form]
 
-        charge = Stripe::Charge.create({
-          :source  => 'tok_visa',
-          :amount      => @amount,
-          :description => 'Rails Stripe customer',
-          :currency    => 'usd'
-        })
+        # @listing = Listing.find(params[:listing_id])
+        # @order = @listing.orders.build(params[:name])
 
-      rescue Stripe::CardError => e
-        flash[:error] = e.message
-        redirect_to new_charge_path
-      end
-    end
+        if @order.valid?
+          begin
+            @amount = (@listing.price).to_i * 100
+            token = params[:stripeToken]
+            payment_form = params[:payment_form]
 
-    respond_to do |format|
-      if @order.save
-        if user_signed_in?
-          @user = current_user
-          OrderMailer.order_email(@user, @order).deliver
-          format.html { redirect_to @order, notice: 'Order was successfully created.' }
-          format.json { render :show, status: :created, location: @order }
-          else
-            format.html { render :new }
-            format.json { render json: @order.errors, status: :unprocessable_entity }
+            customer = Stripe::Customer.create({
+              :source  => 'tok_visa',
+              # :source => (@order.buyer_id)
+              :email => params[:stripeEmail],
+            })
+
+            charge = Stripe::Charge.create({
+              amount: @amount,
+              currency: 'usd',
+              customer: customer.id,
+              capture: false,
+          })
+
+          @order.stripe_customer_token = customer.id
+          # customer.id = customer_id
+            #
+            # charge = Stripe::Charge.create({
+            #   :amount      => @amount,
+            #   :description => 'Rails Stripe customer',
+            #   :currency    => 'usd',
+            #   :customer => customer,
+            #
+            # })
+
+          rescue Stripe::CardError => e
+            charge_error = e.message
           end
-          if buyer_signed_in?
-            @user = current_buyer
-            OrderMailer.order_email(@user, @order).deliver
-            format.html { redirect_to @listing, notice: 'Order was successfully created.' }
-            format.json { render :show, status: :created, location: @order }
+          if charge_error
+            flash[:error] = charge_error
+            redirect_to new_charge_path
+            @order.destroy
           else
-            format.html { render :new }
-            format.json { render json: @order.errors, status: :unprocessable_entity }
+
+    # if @order.valid?
+    #   begin
+    #     @amount = (@listing.price).to_i * 100
+    #     token = params[:stripeToken]
+    #     payment_form = params[:payment_form]
+    #
+    #     customer = Stripe::Customer.create(
+    #       :email => params[:stripeEmail],
+    #     )
+    #
+    #     charge = Stripe::Charge.create({
+    #       :source  => 'tok_visa',
+    #       :amount      => @amount,
+    #       :description => 'Rails Stripe customer',
+    #       :currency    => 'usd'
+    #     })
+    #
+    #   rescue Stripe::CardError => e
+    #     charge_error = e.message
+    #   end
+    #   if charge_error
+    #     flash[:error] = charge_error
+    #     redirect_to new_charge_path
+    #     @order.destroy
+    #   else
+        respond_to do |format|
+          if @order.save
+            if user_signed_in?
+              @user = current_user
+              OrderMailer.order_email(@user, @order).deliver
+              format.html { redirect_to @order, notice: 'Order was successfully created.' }
+              format.json { render :show, status: :created, location: @order }
+              else
+                format.html { render :new }
+                format.json { render json: @order.errors, status: :unprocessable_entity }
+              end
+              if buyer_signed_in?
+                @user = current_buyer
+                OrderMailer.order_email(@user, @order).deliver
+                format.html { redirect_to @listing, notice: 'Order was successfully created.' }
+                format.json { render :show, status: :created, location: @order }
+              else
+                format.html { render :new }
+                format.json { render json: @order.errors, status: :unprocessable_entity }
+              end
+            end
           end
         end
       end
@@ -132,8 +184,26 @@ end
     respond_to do |format|
       if @order.update(order_params)
         if user_signed_in?
+                      charge = Stripe::Charge.create({
+                        :amount      => (@order.order_price).to_i * 100,
+                        :description => 'Rails Stripe customer',
+                        :currency    => 'usd',
+                        :customer => @order.stripe_customer_token,
+
+                      })
+
+                      # transfer = Stripe::Transfer.create({
+                      #   application_fee_percent: 75
+                      #   :currency    => 'usd',
+                      #   destination: @listing.seller_id,
+                      #   transfer_group: "notes_328324"
+                      # })
+
           format.html { redirect_to @order, notice: 'Order was successfully uploaded.' }
           format.json { render :show, status: :ok, location: @order }
+
+          # @user = current_buyer
+          # OrderMailer.order_email(@user, @order).deliver
         else
           format.html { render :edit }
           format.json { render json: @order.errors, status: :unprocessable_entity }
@@ -167,7 +237,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:name, :address, :city, :state, :image, :video, :description, :order_status)
+      params.require(:order).permit(:name, :email, :image, :video, :description, :order_status)
     end
 
     def deny_to_visitors

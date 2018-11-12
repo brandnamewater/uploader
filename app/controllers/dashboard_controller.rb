@@ -5,6 +5,8 @@ class DashboardController < ApplicationController
     #@sales_upload = SalesUpload.new(params[:video])
     #@listing = Listing.find(params[:listing_id])
     @orders_a = Order.all.where(seller: current_user) || @orders = Order.all.where(seller: current_buyer)
+    @orders_b = Order.all.where(seller: current_user).where("created_at <> updated_at") || @orders = Order.all.where(seller: current_buyer)
+
     @orders_month = @orders_a.all.group_by { |mon|  mon.created_at.beginning_of_month }
     @orders_day = @orders_a.all.group_by { |day|  day.created_at.beginning_of_day }
 
@@ -27,9 +29,9 @@ class DashboardController < ApplicationController
     orders_with_video = Order.find_by(video: present?)
 
     @orders = orders.paginate(:page => params[:all_orders_page], :per_page => 15)
-    @orders_for_card = orders.paginate(:page => params[:whatever_orders_page], :per_page => 7)
-    @orders_by_month = orders.group_by { |mon| mon.created_at.beginning_of_month }
-    @orders_with_video = orders_with_video && orders_with_video.paginate(:page => params[:completed_orders_page], :per_page => 7)
+    # @orders_for_card = orders.paginate(:page => params[:whatever_orders_page], :per_page => 7)
+    # @orders_by_month = orders.group_by { |mon| mon.created_at.beginning_of_month }
+    # @orders_with_video = orders_with_video && orders_with_video.paginate(:page => params[:completed_orders_page], :per_page => 7)
 
 
 

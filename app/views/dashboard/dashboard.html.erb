@@ -59,6 +59,13 @@
                             <p>User</p>
                         </a>
                     </li>
+                    <li>
+                        <a class="nav-link">
+
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>Payment</p>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -92,10 +99,9 @@
                                     <tr>
                                         <td><%= month.strftime("%B") %></td>
                                         <td class="center"><%= orders.count %></td>
-                                            <td class="center"><%= (orders.sum { |order| order.updated_at.day - order.created_at.day } / orders.count) %> Days</td>
-                                      </td>
+                                        <td class="center"><%= (orders.sum { |order| order.updated_at.day - order.created_at.day } / orders.count )  %> Days</td>
+                                      <% end %>
                                     </tr>
-                                    <% end %>
                                   </tbody>
                                 </table>
                                 </div>

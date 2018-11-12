@@ -1,7 +1,7 @@
-<div class="padding_5">
+<!-- <div class="padding_5">
 
 
-<%= form_for([@listing, @order], html: {id: "Orders"}) do |form| %>
+<%= form_for([@listing, @order]) do |form| %>
 
 
   <% if @order.errors.any? %>
@@ -18,8 +18,8 @@
 
   <div class="form-group">
     <%= form.label :name, "Who's the Order for?" %>
-    <%= form.text_field :name, class: "form-control" %>
-  </div>
+    <%= form.text_field :name, class: "form-control", required: true %>
+  </div> -->
 
 
   <script
@@ -27,40 +27,53 @@
     src="https://js.stripe.com/v3/">
 
   </script>
-  <form id="form-element" action="/charges" method="post" id="payment_form">
+  <!-- <form id="form-element" action="/charges" method="post" id="payment_form"> -->
 
     <div class="form-row">
       <label for="card-element">
         Credit or debit card
       </label>
       <div id="card-element" class="form-control">
-        <!-- a Stripe Element will be inserted here. -->
       </div>
 
-      <!-- Used to display form errors -->
       <div id="card-errors" role="alert"></div>
     </div>
       <br>
       <div class="form-group">
 
+        <!-- <div class="field">
+          <%= label_tag :card_number, "Credit Card Number" %>
+          <%= text_field_tag :card_number, nil, name: nil, required: true  %>
+        </div>
+        <div class="field">
+          <%= label_tag :card_code, "Security Code on Card (CVV)" %>
+          <%= text_field_tag :card_code, nil, name: nil %>
+        </div>
+        <div class="field">
+          <%= label_tag :card_month, "Card Expiration" %>
+          <%= select_month nil, {add_month_numbers: true}, {name: nil, id: "card_month"} %>
+          <%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+15}, {name: nil, id: "card_year"} %>
+        </div> -->
+
+
     <%= form.submit "asdf", class:"ripple-effect", id:"button-element" %>
-    <button id="button-element" class="ripple-effect">Submit Payment for </button>
+    <!-- <button id="button-element" class="ripple-effect">Submit Payment for </button> -->
 
   </div>
 
   <span class="token"></span>
-  </form>
+  <!-- </form> -->
   <% end %>
 
   </div>
   <script>
 
 
-
+window.onload = function () {
 
 
   // Create a Stripe client.
-  var stripe = Stripe('pk_test_3vXaqxqFsRG6LyWMYKE1f0B8');
+  var stripe = Stripe('pk_test_WUSowiZ1234cPWU8kh');
 
   // Create an instance of Elements
   var elements = stripe.elements();
@@ -88,7 +101,7 @@
   var card = elements.create('card', {style: style});
 
   // Add an instance of the card Element into the `card-element` <div>
-  card.mount('#card-element').required;
+  card.mount('#card-element');
 
   // Handle real-time validation errors from the card Element.
   card.addEventListener('change', function(event) {
@@ -101,7 +114,7 @@
   });
 
   // Handle form submission
-  var form = document.getElementById('payment_form').required;
+  var form = document.getElementById('payment_form');
   form.addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -120,7 +133,7 @@
 
     function stripeTokenHandler(token) {
       // Insert the token ID into the form so it gets submitted to the server
-      var form = document.getElementById('payment_form').required;
+      var form = document.getElementById('payment_form');
       var hiddenInput = document.createElement('input');
       hiddenInput.setAttribute('type', 'hidden');
       hiddenInput.setAttribute('name', 'stripeToken');
@@ -139,7 +152,7 @@
       form.submit();
 
     }
-
+}
 //       $('#Orders').on('submit', function(event) {
 //       event.preventDefault();
 //

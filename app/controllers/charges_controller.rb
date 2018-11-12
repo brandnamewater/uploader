@@ -2,6 +2,7 @@ class ChargesController < ApplicationController
   skip_before_action :verify_authenticity_token
   protect_from_forgery prepend: true
   before_action :set_order, only: [:show, :edit, :update, :destroy]
+    respond_to :html, :js
 
 
   def new

@@ -18,7 +18,7 @@ before_action :authenticate_user!
 
   def show
 
-  end 
+  end
 
 
     def update
@@ -44,7 +44,7 @@ end
 
 
      def user_params
-       params.require(:user).permit(:name, :approved)
+       params.require(:user).permit(:name, :approved, stripe_account: [:stripe_account])
      end
 
 end

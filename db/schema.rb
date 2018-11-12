@@ -10,7 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_31_013638) do
+ActiveRecord::Schema.define(version: 2018_11_10_054340) do
+
+  create_table "bank_accounts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "buyers", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -67,6 +72,7 @@ ActiveRecord::Schema.define(version: 2018_10_31_013638) do
     t.string "name"
     t.boolean "order_status", default: true, null: false
     t.string "stripe_customer_token"
+    t.decimal "order_price"
   end
 
   create_table "sales_uploads", force: :cascade do |t|
@@ -75,6 +81,35 @@ ActiveRecord::Schema.define(version: 2018_10_31_013638) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.integer "order_id"
+  end
+
+  create_table "stripe_accounts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "account_type"
+    t.integer "dob_month"
+    t.integer "dob_day"
+    t.integer "dob_year"
+    t.string "address_city"
+    t.string "address_state"
+    t.string "address_line1"
+    t.string "address_postal"
+    t.boolean "tos"
+    t.string "ssn_last_4"
+    t.string "business_name"
+    t.string "business_tax_id"
+    t.string "personal_id_number"
+    t.string "verification_document"
+    t.string "acct_id"
+    t.string "country"
+    t.integer "user_id"
+  end
+
+  create_table "user_listings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -92,6 +127,8 @@ ActiveRecord::Schema.define(version: 2018_10_31_013638) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.boolean "buyer", default: true
+    t.string "stripe_token"
+    t.string "stripe_account"
     t.index ["approved"], name: "index_users_on_approved"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

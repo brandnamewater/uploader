@@ -2,15 +2,9 @@
 
 <head>
 
-  <script src="https://js.stripe.com/v3/"></script>
-  <!-- <script src="stripejs.js"></script> -->
+
 
 </head>
-
-
-
-<!-- <script src="https://js.stripe.com/v3/"></script> -->
-
 
 
 <div class="jumbotron jumbotron-2">
@@ -62,426 +56,95 @@
 
 
 
-
-<!-- <div class="center-2">
-    <div class="image-circle-2">
-      <%= image_tag @listing.image_url(:thumb) %>
-    </div>
-</div>
-
-<div class="row">
-  <div class="col-md-12">
-    <div class="center">
-          <h3>
-            <%= @listing.name %>
-          </h3>
-
-          <h5>
-            <%= @listing.description %>
-          </h5>
-
-          <p>
-            Usually responds in
-
-              Days
-          </p>
-
-
-          <p>
-            <%= number_to_currency (@listing.price) %>
-          </p>
-          <br>
-        <div class="center">
-          <%= link_to "Get your Order", new_listing_order_path(@listing), class: 'btn btn-primary' %>
-        </div>
-      </div>
-    </div>
-
-  <div class="container">
-    <div class="row bs-wizard" style="border-bottom:0;">
-      <div class="col-xs-4 bs-wizard-step complete">
-        <div class="text-center bs-wizard-stepnum">Step 1 <i class="fa fa-mobile fa-1x" aria-hidden="true"></i></div>
-        <div class="progress"><div class="progress-bar"></div></div>
-          <a class="bs-wizard-dot" data-toggle="tooltip" data-placement="left"
-            title="Your purchase is put on hold and you're not charged until the Order is complete."></a>
-        <div class="bs-wizard-info text-center">Request Your Order!</div>
-          <a class="bs-wizard-dot-2" data-toggle="tooltip" data-placement="top"
-            title="During this time you can edit or cancel your Order."></a>
-      </div>
-
-      <div class="col-xs-4 bs-wizard-step complete">
-        <div class="text-center bs-wizard-stepnum">Step 2</div>
-        <div class="progress"><div class="progress-bar"></div></div>
-        <a class="bs-wizard-dot" data-toggle="tooltip" data-placement="top"
-          title="Once uploaded, you can then Get Your Order!"></a>
-        <div class="bs-wizard-info text-center">Talent views, creates and uploads your Order!</div>
-      </div>
-
-      <div class="col-xs-4 bs-wizard-step complete">
-        <div class="text-center bs-wizard-stepnum">Step 3</div>
-        <div class="progress"><div class="progress-bar"></div></div>
-        <a class="bs-wizard-dot" data-toggle="tooltip" data-placement="right"
-          title="Get Your yoyo from either your dashboard, by email, or by text."></a>
-        <div class="bs-wizard-info text-center">GET YOUR Order!</div>
-      </div>
-    </div>
-	</div>
-</div>
-
-<% if current_user == @listing.user %>
-  <%= link_to 'Edit', edit_listing_path(@listing) %>
-<% end %>
-
-
-<div class="row">
-    <div class="center-3">
-      <div class="card">
-        <div class="card-header">
-          Get your Order!
-        </div>
-        <div class="card-header">
-          <div class="image-circle-2">
-            <%= image_tag @listing.image_url(:thumb) %>
-          </div>
-        </div>
-        <div class="card-body">
-          <form>
-            <div class="form-group">
-              <label for="exampleFormControlInput1">Email address</label>
-              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-            </div>
-            <div class="form-group">
-              <label for="exampleFormControlInput1">Who's the Order for?</label>
-              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Jim Bobs">
-            </div>
-            <div class="form-group">
-              <label for="exampleFormControlTextarea1">Describe to Talent what to say -- (Be as detailed as you can!)</label>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Make a funny face!"></textarea>
-            </div>
-            <div class="form-group">
-              <label for="exampleFormControlSelect1">Set Your Expiration</label>
-              <select class="form-control" id="exampleFormControlSelect1">
-                <option>1 Week</option>
-                <option>2 Weeks</option>
-                <option>3 Weeks</option>
-                <option>1 Month</option>
-                <option>No expiration (3 Months Max)</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="exampleFormControlInput1">Price</label>
-              <%= number_to_currency (@listing.price) %>
-              <%= link_to "Get your Order for", new_listing_order_path(@listing), class: 'btn btn-primary' %>
-            </div>
-
-          </form>
-        </div>
-        <div class="card-footer">Footer</div>
-      </div>
-    </div>
-</div>
-
-<script>
-
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
-
-</script>
-
-</div>
-</div> -->
-
-<!--
-<div class="body-listing">
-
-  <div class="row">
-    <div class="col-md-4">
-      <div class="margin-bottom-10">
-        <%= image_tag @listing.image_url(:listing_index_4) %>
-      </div>
-    </div>
-
-<div class="col-md-8">
-
-  <div class="card">
-    <div class="padding-top-line">
-      <div class="padding-10">
-
-      <div class="center">
-          <div class="row bs-wizard" style="border-bottom:0;">
-            <div class="col-xs-4 bs-wizard-step complete">
-              <div class="text-center bs-wizard-stepnum">Step 1 <i class="fa fa-mobile fa-1x" aria-hidden="true"></i></div>
-              <div class="progress"><div class="progress-bar"></div></div>
-                <a class="bs-wizard-dot" data-toggle="tooltip" data-placement="left"
-                  title="Your purchase is put on hold and you're not charged until the Order is complete."></a>
-              <div class="bs-wizard-info text-center">Request Your Order!</div>
-                <a class="bs-wizard-dot-2" data-toggle="tooltip" data-placement="top"
-                  title="During this time you can edit or cancel your Order."></a>
-            </div>
-
-            <div class="col-xs-4 bs-wizard-step complete">
-              <div class="text-center bs-wizard-stepnum">Step 2</div>
-              <div class="progress"><div class="progress-bar"></div></div>
-              <a class="bs-wizard-dot" data-toggle="tooltip" data-placement="top"
-                title="Once uploaded, you can then Get Your Order!"></a>
-              <div class="bs-wizard-info text-center">Talent views, creates and uploads your Order!</div>
-            </div>
-
-            <div class="col-xs-4 bs-wizard-step complete">
-              <div class="text-center bs-wizard-stepnum">Step 3</div>
-              <div class="progress"><div class="progress-bar"></div></div>
-              <a class="bs-wizard-dot" data-toggle="tooltip" data-placement="right"
-                title="Get Your yoyo from either your dashboard, by email, or by text."></a>
-              <div class="bs-wizard-info text-center">GET YOUR Order!</div>
-            </div>
-        </div>
-            <h3>
-              <%= @listing.name %>
-            </h3>
-
-            <h5>
-              <%= @listing.category_ids %>
-            </h5>
-
-            <p>
-              <%= @listing.description %>
-            </p>
-
-            <p>
-              Usually responds in
-
-                Days
-            </p>
-
-
-
-            <p>
-              <%= number_to_currency (@listing.price) %>
-            </p>
-            <br>
-            <br>
-            <%= link_to "GET YOUR Order!", new_listing_order_path(@listing), class: 'btn ripple-effect btn-primary' %>
-
-            <br>
-            <br>
-
-
-
-
-
-            <button type="button" class="btn ripple-effect btn-info btn-lg" id="myBtnOrderClick">CREATE YOUR Order!</button>
-
-            <div class="modal fade" id="OrderModal" role="dialog">
-              <div class="modal-dialog modal-dialog-centered">
-
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">CREATE YOUR Order!</h4>
-                  </div>
-                  <div class="modal-body">
-
-                   </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-
-
-
-
-
-
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-      <script>
-
-      $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-      })
-
-      $(document).ready(function(){
-          $("#myBtnOrderClick").click(function(){
-              $("#OrderModal").modal();
-          });
-      });
-
-
-
-
-
-
-      (function($) {
-          $(".ripple-effect").click(function(e){
-              var rippler = $(this);
-
-              // create .ink element if it doesn't exist
-              if(rippler.find(".ink").length == 0) {
-                  rippler.append("<span class='ink'></span>");
-              }
-
-              var ink = rippler.find(".ink");
-
-              // prevent quick double clicks
-              ink.removeClass("animate");
-
-              // set .ink diametr
-              if(!ink.height() && !ink.width())
-              {
-                  var d = Math.max(rippler.outerWidth(), rippler.outerHeight());
-                  ink.css({height: d, width: d});
-              }
-
-              // get click coordinates
-              var x = e.pageX - rippler.offset().left - ink.width()/2;
-              var y = e.pageY - rippler.offset().top - ink.height()/2;
-
-              // set .ink position and add class .animate
-              ink.css({
-                top: y+'px',
-                left:x+'px'
-              }).addClass("animate");
-          })
-      })(jQuery);
-
-      </script> -->
-
-
-
-      <!-- <div class="body-listing">
-
-        <div class="row">
-          <div class="col-md-12">
-            <div class="center">
-                  <h2>
-                    <%= @listing.name %>
-                  </h2>
-                  <h5>
-                    <%= @listing.description %>
-                  </h5>
-                  <p>
-                    Usually responds in
-
-                      Days
-                  </p>
-                  <p>
-                    <%= number_to_currency (@listing.price) %>
-                  </p>
-                  <br>
-              </div>
-            </div>
-          </div> -->
-
-
-    <div class="row">
-      <div class="margin-auto">
-      <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-                <div class="center-4">
-                        <h2>
-                          <%= @listing.name %>
-                        </h2>
-                        <h5>
-                          <%= @listing.description %>
-                        </h5>
-                        <p>
-                          Usually responds in
-
-                            Days
-                        </p>
-                    </div>
-              <!-- </div> -->
-              <hr>
-              <!-- <div class="card-header"> -->
-                <div class="center-4">
-                <h2>Create your ORDER!</h2>
-              </div>
-              </div>
-              <div class="card-body">
-                <form>
-                  <div class="form-group">
-                    <label for="exampleFormControlInput1">Email address</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleFormControlInput1">Who's the ORDER for?</label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Jim Bobs">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Describe to Talent what to say -- (Be as detailed as you can!)</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Make a funny face!"></textarea>
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleFormControlSelect1">Set Your Expiration</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
-                      <option>1 Week</option>
-                      <option>2 Weeks</option>
-                      <option>3 Weeks</option>
-                      <option>1 Month</option>
-                      <option>No expiration (3 Months Max)</option>
-                    </select>
-                  </div>
-                  <hr>
+      <div class="row">
+        <div class="margin-auto">
+        <div class="col-md-12">
+              <div class="card">
+                <div class="card-header">
                   <div class="center-4">
+                          <h2>
+                            <%= @listing.name %>
+                          </h2>
+                          <h5>
+                            <%= @listing.description %>
+                          </h5>
+                          <p>
+                            Usually responds in
 
-                  <!-- Trigger the modal with a button -->
-                  <button type="button" class="btn ripple-effect btn-info btn-lg" id="myBtnOrderClick">CREATE YOUR ORDER for <%= number_to_currency (@listing.price) %></button>
-
-                  <!-- Modal -->
-                  <div class="modal fade" id="OrderModal" role="dialog">
-                    <div class="modal-dialog modal-dialog-centered">
-
-                      <!-- Modal content-->
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          <h4 class="modal-title">CREATE YOUR ORDER!</h4>
-                        </div>
-                        <div class="modal-body">
-
-                         </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
+                              Days
+                          </p>
                       </div>
+                <hr>
+                  <div class="center-4">
+                  <h2>Create your Shout!</h2>
+                </div>
+                </div>
+                <div class="card-body">
+
+                  <%= form_for(@order, url: listing_orders_path(@listing)) do |form| %>
+
+                    <% if @order.errors.any? %>
+                      <div id="error_explanation">
+                        <h2><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h2>
+
+                        <ul>
+                        <% order.errors.full_messages.each do |message| %>
+                          <li><%= message %></li>
+                        <% end %>
+                        </ul>
+                      </div>
+                    <% end %>
+
+                    <div class="form-group">
+                      <%= form.label :name, "Who's the Shout for?" %>
+                      <%= form.text_field :name, class: "form-control", required: true %>
                     </div>
-                  </div>
 
-
-                  <!-- <form id="form-element" action="/charge" method="post" id="payment_form">
-                    <div class="form-row">
-                      <label for="card-element">
-                        Credit or debit card
-                      </label>
-                      <div id="card-element" class="form-control"> -->
-                        <!-- a Stripe Element will be inserted here. -->
-                      <!-- </div> -->
-
-                      <!-- Used to display form errors -->
-                      <!-- <div id="card-errors" role="alert"></div>
+                    <div class="form-group">
+                      <%= form.label :email, "Your Email Address -- (You can send the Shout to a new email once uploaded!)" %>
+                      <%= form.text_field :email, class: "form-control", required: true   %>
                     </div>
-                      <br>
-                    <button id="button-element" class="ripple-effect">Submit Payment for <%= number_to_currency (@listing.price) %></button>
-<span class="token"></span> -->
-                  </form>
-                  <%= render 'listings/payment', listing: ([@listing, @order]) %>
-                </form>
 
-              </div>
-              <!-- <div class="card-footer">Footer</div> -->
+                    <div class="form-group">
+                      <%= form.label :description, "Describe to Talent what to say -- (Be as detailed as you can!)" %>
+                      <%= form.text_area :description, class: "form-control", :rows => 10, required: true    %>
+                    </div>
+
+                    <script
+
+                      src="https://js.stripe.com/v3/">
+
+                    </script>
+
+                      <div class="form-row">
+                        <label for="card-element">
+                          Credit or debit card
+                        </label>
+                        <div id="card-element" class="form-control">
+                        </div>
+
+                        <div id="card-errors" role="alert"></div>
+                      </div>
+                        <br>
+                        <div class="form-group">
+
+                          <!-- <%= form.hidden_field :stripe_customer_token %> -->
+
+                      <%= form.submit "Create Shout for #{number_to_currency(@listing.price)}", class:"ripple-effect", id:"button-element" %>
+
+                    </div>
+
+                    <span class="token"></span>
+                    <!-- </form> -->
+                    <% end %>
+
+                    </div>
+
+
+                </div>
+            </div>
           </div>
         </div>
-      </div>
 
 
       <script>
@@ -547,7 +210,7 @@ $(function () {
 
 
   // Create a Stripe client.
-  var stripe = Stripe('pk_test_3vXaqxqFsRG6LyWMYKE1f0B8');
+  var stripe = Stripe('pk_test_WUSo1234SqQJucPWU8kh');
 
   // Create an instance of Elements
   var elements = stripe.elements();
@@ -621,4 +284,4 @@ $(function () {
 
 </script>
 
-<%= link_to "Get your order for", new_listing_order_path(@listing), class: 'btn btn-primary' %>
+<!-- <%= link_to "Get your order for", new_listing_order_path(@listing), class: 'btn btn-primary' %> -->
