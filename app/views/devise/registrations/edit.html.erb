@@ -107,8 +107,15 @@
                             <p>User</p>
                         </a>
                     </li>
+                    <li>
+                        <a class="nav-link" href="/settings">
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>Settings</p>
+                        </a>
+                    </li>
                 </ul>
             </div>
+
         </div>
         <div class="main-panel">
             <!-- Navbar -->
@@ -146,7 +153,7 @@
                                       <% end %>
 
                                       <div class="form-group">
-                                        <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+                                        <%= f.label :password %> (leave blank if you don't want to change it)<br />
                                         <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
                                         <% if @minimum_password_length %>
                                           <br />
@@ -160,18 +167,25 @@
                                       </div>
 
                                       <div class="form-group">
-                                        <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+                                        <%= f.label :current_password %> (we need your current password to confirm your changes)<br />
                                         <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %>
                                       </div>
-
+                                      <br>
                                       <div class="actions">
-                                        <%= f.submit "Update", class: "btn btn-primary" %>
+                                        <%= f.submit "Update", class: "btn btn-primary btn-lg" %>
                                       </div>
                                     <% end %>
                                 </div>
 
                             </div>
-                            <%= link_to 'New Stripe Account', new_user_stripe_account_path(@user) %>
+                            <!-- <% if current_user.stripe_token.present? %> -->
+                            <!-- <%= link_to 'Edit Payment Settings', new_user_stripe_account_path(@user), data: {
+                              :confirm =>'Are you sure?
+                                Editing any of your current payment settings will override any prevoius setting and you will need to re-enter your bank information.  You should only be doing this if you have changed banks, bank accounts, have a new location or your banking Information has updated.'} %> -->
+                            <!-- <%= link_to 'Edit Payment Settings', "javascript:void(0)", 'data-target': "#myModal-1", 'data-toggle': "modal" %>
+                            <% else %>
+                            <%= link_to 'Add Payment Details', new_user_stripe_account_path(@user) %>
+                            <% end %> -->
 
                         </div>
                     </div>
@@ -185,86 +199,43 @@
 
         </div>
     </div>
-    <!--   -->
-    <!-- <div class="fixed-plugin">
-    <div class="dropdown show-dropdown">
-        <a href="#" data-toggle="dropdown">
-            <i class="fa fa-cog fa-2x"> </i>
-        </a>
 
-        <ul class="dropdown-menu">
-			<li class="header-title"> Sidebar Style</li>
-            <li class="adjustments-line">
-                <a href="javascript:void(0)" class="switch-trigger">
-                    <p>Background Image</p>
-                    <label class="switch">
-                        <input type="checkbox" data-toggle="switch" checked="" data-on-color="primary" data-off-color="primary"><span class="toggle"></span>
-                    </label>
-                    <div class="clearfix"></div>
-                </a>
-            </li>
-            <li class="adjustments-line">
-                <a href="javascript:void(0)" class="switch-trigger background-color">
-                    <p>Filters</p>
-                    <div class="pull-right">
-                        <span class="badge filter badge-black" data-color="black"></span>
-                        <span class="badge filter badge-azure" data-color="azure"></span>
-                        <span class="badge filter badge-green" data-color="green"></span>
-                        <span class="badge filter badge-orange" data-color="orange"></span>
-                        <span class="badge filter badge-red" data-color="red"></span>
-                        <span class="badge filter badge-purple active" data-color="purple"></span>
-                    </div>
-                    <div class="clearfix"></div>
-                </a>
-            </li>
-            <li class="header-title">Sidebar Images</li>
-
-            <li class="active">
-                <a class="img-holder switch-trigger" href="javascript:void(0)">
-                    <img src="../assets/img/sidebar-1.jpg" alt="" />
-                </a>
-            </li>
-            <li>
-                <a class="img-holder switch-trigger" href="javascript:void(0)">
-                    <img src="../assets/img/sidebar-3.jpg" alt="" />
-                </a>
-            </li>
-            <li>
-                <a class="img-holder switch-trigger" href="javascript:void(0)">
-                    <img src="..//assets/img/sidebar-4.jpg" alt="" />
-                </a>
-            </li>
-            <li>
-                <a class="img-holder switch-trigger" href="javascript:void(0)">
-                    <img src="../assets/img/sidebar-5.jpg" alt="" />
-                </a>
-            </li>
-
-            <li class="button-container">
-                <div class="">
-                    <a href="http://www.creative-tim.com/product/light-bootstrap-dashboard" target="_blank" class="btn btn-info btn-block btn-fill">Download, it's free!</a>
-                </div>
-            </li>
-
-            <li class="header-title pro-title text-center">Want more components?</li>
-
-            <li class="button-container">
-                <div class="">
-                    <a href="http://www.creative-tim.com/product/light-bootstrap-dashboard-pro" target="_blank" class="btn btn-warning btn-block btn-fill">Get The PRO Version!</a>
-                </div>
-            </li>
-
-            <li class="header-title" id="sharrreTitle">Thank you for sharing!</li>
-
-            <li class="button-container">
-				<button id="twitter" class="btn btn-social btn-outline btn-twitter btn-round sharrre"><i class="fa fa-twitter"></i> · 256</button>
-                <button id="facebook" class="btn btn-social btn-outline btn-facebook btn-round sharrre"><i class="fa fa-facebook-square"></i> · 426</button>
-            </li>
-        </ul>
-    </div>
-</div>
- -->
 </body>
+
+<!-- <% if current_user.stripe_token.present? %> -->
+<!-- <div id="myModal-1" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <h2>Are you sure?</h2>
+        <p>Editing any of your current payment settings will override any
+           previous settings and you will need to re-enter your banking data.
+          You should only be doing this if you have changed banks or bank accounts,
+          have a new location or your banking information has updated on the banks end.</p>
+        <%= link_to "Yes", new_user_stripe_account_path(@user) %>/
+        <%= link_to "No", "javascript:void(0)",'data-dismiss': "modal" %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+    $(window).on('onclick',function(){
+        $('#myModal-1').modal('show');
+    });
+
+
+</script> -->
+<!-- <% end %> -->
 
 
 <!--  Google Maps Plugin    -->

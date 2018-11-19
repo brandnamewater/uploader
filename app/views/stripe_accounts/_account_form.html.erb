@@ -63,6 +63,12 @@
                           </a>
                         </li>
                     </li>
+                    <li>
+                        <a class="nav-link">
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>Settings</p>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -78,6 +84,9 @@
                                 <div class="card-header ">
                                     <h4 class="card-title">Payment Information</h4>
                                     <p class="card-category">This information is needed for payments.</p>
+                                    <% if current_user.stripe_token.present? %>
+                                    <p class="card-category" style="color:green">You already have a connected account for your payouts from Shouts.  Only update your account if your banking information has changed.<p>
+                                      <% end%>
                                 </div>
                                 <div class="card-body ">
                                   <div data-spy="scroll" data-offset="0">
@@ -97,7 +106,7 @@
                                                   <div class="col-md-12">
                                                     <div class="form-group">
                                                       <%= f.label :business_name, "Business name (as it appears to the IRS)" %>
-                                                      <%= f.text_field :business_name, class: "form-control input-lg", placeholder: "My Business LLC" %>
+                                                      <%= f.text_field :business_name, class: "form-control input-lg", placeholder: "Your Business Name LLC" %>
                                                     </div>
                                                   </div>
                                                 </div>
@@ -114,13 +123,13 @@
                                                 <div class="col-md-6">
                                                   <div class="form-group">
                                                     <%= f.label :first_name, "First Name" %>
-                                                    <%= f.text_field :first_name, class: "form-control input-lg", placeholder: "Jane" %>
+                                                    <%= f.text_field :first_name, class: "form-control input-lg", placeholder: current_user.name %>
                                                   </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                   <div class="form-group">
                                                     <%= f.label :last_name, "Last Name" %>
-                                                    <%= f.text_field :last_name, class: "form-control input-lg", placeholder: "Doe" %>
+                                                    <%= f.text_field :last_name, class: "form-control input-lg", placeholder: current_user.name %>
                                                   </div>
                                                 </div>
                                               </div>
@@ -195,19 +204,23 @@
                                                 </div>
                                               </div>
                                               <div class="field">
-                                                <!-- <%= f.hidden_field :id, :value => current_user.id %> -->
+                                                <%= hidden_field_tag current_user.id %>
                                               </div>
                                               <div class="row">
                                                 <div class="col-md-12">
                                                   <div class="form-group">
+                                                    <% if current_user.stripe_token.present? %>
+                                                    <%= f.button "Update Account", class: "btn btn-primary btn-lg btn-block btn-custom", data:  {confirm: "Are you sure?"}, data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Creating account..."} %>
+                                                    <% else %>
                                                     <%= f.button "Create Account", class: "btn btn-primary btn-lg btn-block btn-custom", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Creating account..."} %>
+                                                    <% end %>
                                                   </div>
                                                 </div>
 
                                               </div>
                                               <hr>
                                               <div class="row">
-                                                <i class="fa fa-info" aria-hidden="true"></i><p>This data is not stored in our database</p>
+                                                <i class="fa fa-info" aria-hidden="true"></i><h6>Any sensitive information, such as banking information, is not saved within our database</h6>
                                               </div>
                                             <% end %>
                                           </div>
@@ -232,9 +245,12 @@
 
 </body>
 
+
+
+
 <script>
 
-var stripe = Stripe('pk_test_WUSow1234SqQJucPWU8kh');
+var stripe = Stripe('pk_test_WUSowiZS0TqTSqQJucPWU8kh');
 
   $(function(){
     $('#stripe_account_account_type').change(function(){

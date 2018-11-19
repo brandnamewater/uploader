@@ -1,67 +1,257 @@
 <%= content_for :page_title, "Add a new bank account" %>
 <% content_for(:header) do %>
-  <script src="https://js.stripe.com/v3/"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.payment/1.4.1/jquery.payment.js"></script>
-  <script>
-    // Set your Stripe publishable API key here
-    // Stripe.setPublishableKey("<%= ENV['PUBLISHABLE_KEY'] %>");
-    var stripe = Stripe('pk_test_W1234qTSqQJucPWU8kh');
 
-    $(function() {
-      var $form = $('#payment-form-1');
-      $form.submit(function(event) {
-        // Clear any errors
-        $form.find('.has-error').removeClass('has-error');
-        // Disable the submit button to prevent repeated clicks:
-        $form.find('.submit').prop('disabled', true).html("<i class='fa fa-spinner fa-spin'></i> Adding bank account...");
-        // Request a token from Stripe:
-        // Stripe.bankAccount.createToken($form, stripeResponseHandler);
-        Stripe.createToken('bank_account',
-          $form, stripeResponseHandler);
-
-        // Prevent the form from being submitted:
-        return false;
-      });
-    });
-
-
-    function stripeResponseHandler(status, response) {
-      var $form = $('#payment-form-1');
-      if (response.error) {
-        // Show the errors on the form
-        $form.find('.errors').text(response.error.message).addClass('alert alert-danger');
-        $form.find('.' + response.error.param).parent('.form-group').addClass('has-error');
-        $form.find('button').prop('disabled', false).text('Add Bank Account'); // Re-enable submission
-      }
-      else { // Token was created!
-        $form.find('.submit').html("<i class='fa fa-check'></i> Account added");
-
-        // Get the token ID:
-        var token = response.id;
-        // Insert the token and name into the form so it gets submitted to the server:
-        $form.append($('<input type="hidden" name="stripeToken" />').val(token));
-          // hiddenInput.setAttribute('name', 'stripeToken');
-        // Submit the form:
-        $form.get(0).submit();
-      }
-    }
-  </script>
 <% end %>
-<div class="container">
-  <div class="row topspace-lg">
-    <div class="col-md-6 col-md-offset-3">
-      <h1 class="text-center">Add a bank account</h1>
-      <div>
-        <%= render 'bank_account_form' %>
-        <div class="hint">
-          <p>
-            <i class="fa fa-info-circle"></i> Hint: use <strong>110000000</strong> and <strong>000123456789</strong> to simulate a successful transfer.
-          </p>
-          <p class="text-center">
-            <a href="https://stripe.com/docs/testing#managed-accounts" target="_blank">Other test bank account numbers</a>
-          </p>
+
+
+<script src="https://js.stripe.com/v3/"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.payment/1.4.1/jquery.payment.js"></script>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+    <!-- CSS Files -->
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="sidebar" data-image=" ">
+            <!--
+        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+
+        Tip 2: you can also add an image using data-image tag
+    -->
+            <div class="sidebar-wrapper">
+                <div class="logo">
+                    <a href="/dashboard" class="simple-text">
+                      yoyo
+
+                    </a>
+                </div>
+                <ul class="nav">
+                  <% if user_signed_in? || current_user.try(:admin?) %>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/dashboard">
+                            <i class="nc-icon nc-chart-pie-35"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="/yoyo">
+                            <i class="nc-icon nc-circle-09"></i>
+                            <p>yoyo</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="/seller">
+                            <i class="nc-icon nc-notes"></i>
+                            <p>Manage Listing(s)</p>
+                        </a>
+                    </li>
+                    <% end %>
+                    <li>
+                        <a class="nav-link" href="/purchases">
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>Purchases</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="/users/edit">
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>User</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="/account">
+
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>Payment</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="/settings">
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>Settings</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </div>
+
+        <% if user_signed_in? || current_user.try(:admin?) %>
+
+        <div class="main-panel">
+            <!-- Navbar -->
+
+            <!-- End Navbar -->
+            <div class="content">
+                <div class="container-fluid">
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="card ">
+                              <div class="card-header ">
+                                  <h4 class="card-title">Add Your Bank Account</h4>
+                                  <p class="card-category">Your payment will be sent to this bank account</p>
+                              </div>
+                              <div class="card-body ">
+                                <div class="container">
+                                  <div class="row topspace-lg">
+                                    <div class="col-md-6 col-md-offset-3">
+                                      <h1 class="text-center">Add a bank account</h1>
+                                      <div>
+                                        <body>
+                                          <form action="/bank_accounts" method="POST" id="payment-form-1">
+                                            <input type="hidden" name="token" />
+                                            <div class="form-row" "form-control">
+                                              <label for="country">Country</label>
+                                              <select id="country" class="form-control">
+                                                <option value="US">United States</option>
+                                                <option value="CA">Canada</option>
+                                                <option value="GB">United Kingdom</option>
+                                                <option value="DE">Germany</option>
+                                                <option value="FR">France</option>
+                                                <option value="ES">Spain</option>
+                                              </select>
+                                            </div>
+                                            <div class="form-row">
+                                              <label for="currency">Currency</label>
+                                              <select id="currency" class="form-control">
+                                                <option value="USD">US Dollar</option>
+                                                <option value="CAD">Canadian Dollar</option>
+                                                <option value="GBP">Pound</option>
+                                                <option value="EUR">Euro</option>
+                                              </select>
+                                            </div>
+                                            <div class="form-row">
+                                              <label for="routing-number">Routing Number</label>
+                                              <input type="text" class="form-control" id="routing-number" value="110000000" />
+                                            </div>
+                                            <div class="form-row">
+                                              <label for="account-number">Account Number</label>
+                                              <input type="text" class="form-control" id="account-number" value="000123456789" />
+                                            </div>
+                                            <div class="form-row">
+                                              <label for="account-holder-name">Account Holder Name</label>
+                                              <input type="text" class="form-control" id="account-holder-name" />
+                                            </div>
+                                            <div class="form-row">
+                                              <label for="account-holder-type">Account Holder Type</label>
+                                              <select id="account-holder-type" class="form-control">
+                                                <option value="individual">Individual</option>
+                                                <option value="company">Company</option>
+                                              </select>
+                                              <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+                                              <%= hidden_field_tag :stripeToken, current_user.stripe_token -%>
+                                              <%= hidden_field_tag :stripe_account_id, :value => @stripe_account_id %>
+                                            </div>
+                                            <br>
+                                            <button type="submit" class="btn btn-primary btn-lg btn-block btn-custom">Submit</button>
+                                            <div class="outcome">
+                                              <div class="error"></div>
+                                              <div class="success">
+                                                Success! Your Stripe token is <span class="token"></span>
+                                              </div>
+                                            </div>
+                                          </form>
+
+
+
+
+
+
+
+
+
+
+
+                                        </body>
+                                      </div>
+
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="card-footer ">
+                                      <div class="legend">
+
+                                      </div>
+                                      <hr>
+                                      <div class="stats">
+                                          <i class="fa fa-info"></i> This information is never saved.
+                                      </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
     </div>
   </div>
-</div>
+
+ <% end %>
+</body>
+
+<script>
+  // Set your Stripe publishable API key here
+  // Stripe.setPublishableKey("<%= ENV['PUBLISHABLE_KEY'] %>");
+  var stripe = Stripe('pk_test_WUSowiZS0TqTSqQJucPWU8kh');
+
+  function setOutcome(result) {
+  var successElement = document.querySelector('.success');
+  var errorElement = document.querySelector('.error');
+  successElement.classList.remove('visible');
+  errorElement.classList.remove('visible');
+
+  if (result.token) {
+    // In this example, we're simply displaying the token
+    successElement.querySelector('.token').textContent = result.token.id;
+    successElement.classList.add('visible');
+
+    // In a real integration, you'd submit the form with the token to your backend server
+    var form = document.querySelector('form');
+    form.querySelector('input[name="token"]').setAttribute('value', result.token.id);
+    form.submit();
+
+  } else {
+    errorElement.textContent = result.error.message;
+    errorElement.classList.add('visible');
+  }
+}
+
+document.querySelector('form').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  var bankAccountParams = {
+    country: document.getElementById('country').value,
+    currency: document.getElementById('currency').value,
+    account_number: document.getElementById('account-number').value,
+    account_holder_name: document.getElementById('account-holder-name').value,
+    account_holder_type: document.getElementById('account-holder-type').value,
+  }
+  if (document.getElementById('routing-number').value != '') {
+    bankAccountParams['routing_number'] = document.getElementById('routing-number').value;
+  }
+
+  stripe.createToken('bank_account', bankAccountParams).then(setOutcome);
+});
+
+
+</script>
+
+<script type="text/javascript">
+        var baseOptions = {
+          maintainAspectRatio: false,
+          animation: false
+          };
+</script>
+
+</html>

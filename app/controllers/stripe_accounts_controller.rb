@@ -12,6 +12,14 @@ class StripeAccountsController < ApplicationController
   # GET /stripe_accounts/1
   # GET /stripe_accounts/1.json
   def show
+    @user = current_user.id
+    @stripe_account = StripeAccount.find(params[:id])
+
+    @stripe_account_bank = Stripe::Account.retrieve(current_user.stripe_token){
+      :id
+
+    @bank_account = @stripe_account_bank.external_accounts.retrieve(id)
+  }
   end
 
   # GET /stripe_accounts/new
@@ -26,19 +34,21 @@ class StripeAccountsController < ApplicationController
     @user = User.find(params[:user_id])
 
     # Check for a valid account ID
-    # unless params[:id] && params[:id].eql?(current_user.stripe_token)
+    # unless params[:acct_id] && params[:id].eql?(current_user.stripe_token)
     #   flash[:error] = "No Stripe account specified"
     #   redirect_to dashboard_path and return
     # end
 
   # Retrieve the Stripe account to find fields needed
-    @stripe_account = Stripe::Account.retrieve(params[:acct_id])
+    # @stripe_account = Stripe::Account.retrieve(params[:acct_id])
+    @stripe_account = Stripe::Account.retrieve(current_user.stripe_token)
+
     # @stripe_account = Stripe::Account.retrieve(@stripe_account.acct_id)
 
     # @stripe_account = @user.stripe_token(stripe_account_params)
 
     # Retrieve the local account details
-    @stripe_account = StripeAccount.find_by(acct_id: params[:id])
+    @stripe_account = StripeAccount.find_by(params[:id])
 
     # if @stripe_account.verification.fields_needed.empty?
     #   flash[:success] = "Your information is all up to date."

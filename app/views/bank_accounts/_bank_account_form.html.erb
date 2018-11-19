@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<!-- <div class="panel panel-default">
   <div class="panel-body">
     <form action="/bank_accounts" method="POST" id="payment-form-1">
       <div class="errors"></div>
@@ -51,4 +51,59 @@
       <%= hidden_field_tag :stripeToken, @stripe_account -%>
     </form>
   </div>
-</div>
+</div> -->
+
+<body>
+  <form action="/bank_accounts" method="POST" id="payment-form-1">
+    <input type="hidden" name="token" />
+    <div class="form-row">
+      <label for="country">Country</label>
+      <select id="country">
+        <option value="US">United States</option>
+        <option value="CA">Canada</option>
+        <option value="GB">United Kingdom</option>
+        <option value="DE">Germany</option>
+        <option value="FR">France</option>
+        <option value="ES">Spain</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label for="currency">Currency</label>
+      <select id="currency">
+        <option value="USD">US Dollar</option>
+        <option value="CAD">Canadian Dollar</option>
+        <option value="GBP">Pound</option>
+        <option value="EUR">Euro</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label for="routing-number">Routing Number</label>
+      <input type="text" id="routing-number" value="110000000" />
+    </div>
+    <div class="form-row">
+      <label for="account-number">Account Number</label>
+      <input type="text" id="account-number" value="000123456789" />
+    </div>
+    <div class="form-row">
+      <label for="account-holder-name">Account Holder Name</label>
+      <input type="text" id="account-holder-name" value="Jane Austen" />
+    </div>
+    <div class="form-row">
+      <label for="account-holder-type">Account Holder Type</label>
+      <select id="account-holder-type">
+        <option value="individual">Individual</option>
+        <option value="company">Company</option>
+      </select>
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+      <%= hidden_field_tag :token -%>
+
+    </div>
+    <button type="submit">Submit</button>
+    <div class="outcome">
+      <div class="error"></div>
+      <div class="success">
+        Success! Your Stripe token is <span class="token"></span>
+      </div>
+    </div>
+  </form>
+</body>

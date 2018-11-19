@@ -13,6 +13,8 @@ class StripeAccount < ApplicationRecord
 
   belongs_to :user, optional: true
 
+  belongs_to :bank_account
+
   validates :user_id, presence: true, uniqueness: true
-  
+
 end

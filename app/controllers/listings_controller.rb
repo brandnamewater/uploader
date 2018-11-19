@@ -2,6 +2,7 @@ class ListingsController < ApplicationController
   before_action :set_listing, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :check_user, only: [:edit, :update, :destroy]
+  before_action :user_approved, only: [:create]
   # attr_accessor :new_category_name
 
   def payment
@@ -168,6 +169,12 @@ class ListingsController < ApplicationController
     def check_user
       if current_user != @listing.user
         redirect_to root_url, alert: "Sorry, this isn't your listing"
+      end
+    end
+
+    def user_approved
+      if current_user != (@user.approved == true)
+        redirect_to root_url, alert: "Sorry, your account isn't approved, please contact the admins"
       end
     end
 end

@@ -20,11 +20,15 @@ class Order < ApplicationRecord
 
   belongs_to :listing
   belongs_to :buyer, class_name: "User"
-  belongs_to :seller, class_name: "User"
+  # belongs_to :seller, class_name: "User"
+  belongs_to :seller, foreign_key: :seller_id, class_name: "User"
+
 #  belongs_to :buyer
   #has_one :sales_upload
   #has_one :sales_upload, :as => :video
   #has_many :sales_uploads
+
+  enum order_status: { created: 1, charged: 2, cancelled: 3 }
 
 
     # def save_with_payment

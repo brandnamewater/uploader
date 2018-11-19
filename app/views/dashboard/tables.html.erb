@@ -25,7 +25,7 @@
             <div class="sidebar-wrapper">
                 <div class="logo">
                     <a href="/dashboard" class="simple-text">
-                        yoyo.tv
+                        SHOUTS
                     </a>
                 </div>
                 <ul class="nav">
@@ -38,7 +38,7 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="/yoyo">
                             <i class="nc-icon nc-circle-09"></i>
-                            <p>yoyo</p>
+                            <p>Shouts</p>
                         </a>
                     </li>
                     <li>
@@ -53,6 +53,10 @@
                             <p>User</p>
                         </a>
                     </li>
+                    <li>
+                        <a class="nav-link" href="/settings">
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>Settings</p>
                         </a>
                     </li>
                 </ul>
@@ -68,27 +72,29 @@
                         <div class="col-md-12">
                             <div class="card strpied-tabled-with-hover">
                                 <div class="card-header ">
-                                    <h4 class="card-title">Your yoyo</h4>
-                                    <p class="card-category">You can view and take actions on your yoyo here.</p>
+                                    <h4 class="card-title">Your Shouts</h4>
+                                    <p class="card-category">You can view and take actions on your Shouts here.</p>
                                 </div>
                                 <div class="card-body table-full-width table-responsive">
                                     <table class="table table-hover table-striped">
                                       <table class="table table-hover">
                                         <thead>
                                           <tr>
+                                            <th class="center">ID</th>
                                             <th class="text-xs-center">Customer</th>
-                                            <th class="center">Price</th>
+                                            <!-- <th class="center">Price</th> -->
                                             <th class="center">Date</th>
                                             <th class="center">View / Upload Order</th>
-                                            <th class="center">Upload Status</th>
+                                            <th class="center">Upload</th>
                                             <th class="center">Action</th>
                                           </tr>
                                         </thead>
-                                        <% @orders.each do |order| %>
+                                        <% @orders_tables.each do |order| %>
                                           <tbody>
                                             <tr>
+                                            <td class="center"><%= order.id %></td>
                                             <td class="center"><%= order.buyer.name %></td>
-                                            <td class="center"><%= number_to_currency(order.listing.price) %></td>
+                                            <!-- <td class="center"><%= number_to_currency(order.listing.price) %></td> -->
                                             <td class="center"><%= order.created_at.strftime("%B %-d, %Y") %></td>
                                             <td class="center"><%= link_to "View", order_path(order), class: "btn btn-primary-1" %></td>
                                             <td class="center">
@@ -104,13 +110,13 @@
                                             </td>
                                             <td class="center">
 
-                                                    <% if order.order_status == false %>
+                                                    <% if order.order_status == "cancelled" %>
                                                       cancelled
                                                       <% elsif order.video.present? %>
                                                         <i class="fa fa-times" aria-hidden="true" style="color:grey"></i>
                                                           <% else %>
                                                             <%= form_for order, remote: true do |f| %>
-                                                            <%= f.hidden_field :order_status, value: false %>
+                                                            <%= f.hidden_field :order_status, value: "cancelled" %>
                                                             <%= f.button type:'submit', data: {confirm: "Are you sure you want to cancel this order? You cannot undo this"}, class: "btn btn-danger-1" do %>
                                                             <i class="fa fa-times" aria-hidden="true"></i>
                                                         <% end %>
@@ -123,33 +129,38 @@
                                           <% end %>
                                         </tbody>
                                     </table>
-                                    <%= will_paginate @orders %>
+                                    <div class="digg_pagination">
+                                    <%= will_paginate @orders_tables, :param_name => 'all_orders_page' %>
+                                  </div>
+
                                 </div>
                             </div>
                         </div>
                             <div class="col-md-6">
                                 <div class="card ">
                                     <div class="card-header ">
-                                        <h4 class="card-title">yoyo History</h4>
-                                        <p class="card-category">Your completed & uploaded yoyo</p>
+                                        <h4 class="card-title">Shouts History</h4>
+                                        <p class="card-category">Your completed & uploaded Shouts</p>
                                     </div>
                                     <div class="card-body">
                                       <table class="table table-hover">
                                         <thead>
                                           <tr>
+                                            <th class="center">ID</th>
                                             <th class="center">Customer</th>
-                                            <th class="center">Price</th>
+                                            <!-- <th class="center">Price</th> -->
                                             <th class="center">Date</th>
                                             <th class="center">View Order</th>
                                             <th class="center">Status</th>
                                           </tr>
                                         </thead>
-                                        <% @orders.each do |order| %>
+                                        <% @orders_tables_comp.each do |order| %>
                                           <tbody>
                                             <tr>
-                                              <% if order.video.present? %>
+                                              <% if order.order_status == "charged" && order.video.present? %>
+                                            <td class="center"><%= order.id %></td>
                                             <td class="center"><%= order.buyer.name %></td>
-                                            <td class="center"><%= number_to_currency(order.listing.price) %></td>
+                                            <!-- <td class="center"><%= number_to_currency(order.listing.price) %></td> -->
                                             <td class="center"><%= order.created_at.strftime("%m/%-d/%Y") %></td>
                                             <td class="center"><%= link_to "View", order_path(order), class: "btn btn-primary-1" %></td>
                                             <td class="center">
@@ -159,15 +170,14 @@
                                                 </div>
                                               </div>
                                             </td>
-
-
-
                                           </tr>
                                           <% end %>
-
                                           <% end %>
                                         </tbody>
                                       </table>
+                                      <div class="digg_pagination">
+                                        <%= will_paginate @orders_tables_comp, :param_name => 'comp_orders_page', :page_links => false %>
+                                      </div>
                                     </div>
                                     <div class="card-footer ">
 
@@ -181,26 +191,26 @@
                                 <div class="col-md-6">
                                     <div class="card ">
                                         <div class="card-header ">
-                                            <h4 class="card-title">yoyo to Upload</h4>
-                                            <p class="card-category">Your yoyo that need to be Uploaded</p>
+                                            <h4 class="card-title">Shouts to Upload</h4>
+                                            <p class="card-category">Your Shouts that need to be Uploaded</p>
                                         </div>
                                         <div class="card-body ">
                                           <table class="table table-hover">
                                             <thead>
                                               <tr>
                                                 <th class="center">Customer</th>
-                                                <th class="center">Price</th>
+                                                <!-- <th class="center">Price</th> -->
                                                 <th class="center">Date</th>
                                                 <th class="center">View Order</th>
                                                 <th class="center">Upload</th>
                                               </tr>
                                             </thead>
-                                            <% @orders.each do |order| %>
+                                            <% @orders_tables_up.each do |order| %>
                                               <tbody>
                                                 <tr>
-                                                  <% if order.video.blank? %>
+                                                  <% if order.order_status == "created" && order.video.blank? %>
                                                 <td class="center"><%= order.buyer.name %></td>
-                                                <td class="center"><%= number_to_currency(order.listing.price) %></td>
+                                                <!-- <td class="center"><%= number_to_currency(order.listing.price) %></td> -->
                                                 <td class="center"><%= order.created_at.strftime("%m/%-d/%Y") %></td>
                                                 <td class="center"><%= link_to "View", order_path(order), class: "btn btn-primary-1" %></td>
                                                 <td class="center">
@@ -210,10 +220,12 @@
                                                 </td>
                                               </tr>
                                               <% end %>
-
                                               <% end %>
                                             </tbody>
                                           </table>
+                                          <div class="digg_pagination">
+                                            <%= will_paginate @orders_tables_up, :param_name => 'up_orders_page', :page_links => false  %>
+                                          </div>
                                         </div>
                                         <div class="card-footer ">
 

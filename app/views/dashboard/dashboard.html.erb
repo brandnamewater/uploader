@@ -22,7 +22,7 @@
             <div class="sidebar-wrapper">
                 <div class="logo">
                     <a href="/dashboard" class="simple-text">
-                      yoyo
+                      SHOUTStv
 
                     </a>
                 </div>
@@ -37,7 +37,7 @@
                     <li>
                         <a class="nav-link" href="/yoyo">
                             <i class="nc-icon nc-circle-09"></i>
-                            <p>yoyo</p>
+                            <p>Shouts</p>
                         </a>
                     </li>
                     <li>
@@ -60,10 +60,16 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link">
+                        <a class="nav-link" href="/account">
 
                             <i class="nc-icon nc-paper-2"></i>
                             <p>Payment</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="/settings">
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>Settings</p>
                         </a>
                     </li>
                 </ul>
@@ -82,7 +88,7 @@
                       <div class="col-md-4">
                           <div class="card ">
                               <div class="card-header ">
-                                  <h4 class="card-title">yoyo Analytics</h4>
+                                  <h4 class="card-title">Shouts Analytics</h4>
                                   <p class="card-category">Monthly</p>
                               </div>
                               <div class="card-body ">
@@ -90,7 +96,7 @@
                                   <thead>
                                     <tr>
                                       <th class="center">Month</th>
-                                      <th class="center">Amount of yoyo</th>
+                                      <th class="center">Amount of Shouts</th>
                                       <th class="center">Average Response Time</th>
                                     </tr>
                                   </thead>
@@ -105,19 +111,14 @@
                                   </tbody>
                                 </table>
                                 </div>
-                              <div class="card-footer ">
-                                  <hr>
-                                  <div class="stats">
-                                      <i class="fa fa-check"></i> Data information certified
-                                  </div>
-                              </div>
+
                           </div>
                       </div>
                         <div class="col-md-8">
                             <div class="card scroll">
                                 <div class="card-header ">
                                     <h4 class="card-title">Monthly</h4>
-                                    <p class="card-category">Monthly yoyo chart</p>
+                                    <p class="card-category">Monthly Shouts chart</p>
                                 </div>
                                 <div class="card-body ">
                                   <div data-spy="scroll" data-offset="0">
@@ -126,17 +127,14 @@
 
 
                                   </div>
-                                <div class="card-footer ">
 
-                                    <hr>
-                                </div>
                             </div>
                         </div>
                     </div>
                         <div class="col-md-4">
                             <div class="card ">
                                 <div class="card-header ">
-                                    <h4 class="card-title">yoyo Analytics</h4>
+                                    <h4 class="card-title">Shouts Analytics</h4>
                                     <p class="card-category">Daily</p>
                                 </div>
                                 <div class="card-body ">
@@ -144,7 +142,7 @@
                                     <thead>
                                       <tr>
                                         <th class="center">Month</th>
-                                        <th class="center">Amount of yoyo</th>
+                                        <th class="center">Amount of Shouts</th>
                                       </tr>
                                     </thead>
                                     <% @orders_day.each do |day, orders| %>
@@ -158,19 +156,14 @@
                                     </tbody>
                                   </table>
                                   </div>
-                                <div class="card-footer ">
-                                    <hr>
-                                    <div class="stats">
-                                        <i class="fa fa-check"></i> Data information certified
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                         <div class="col-md-8">
                             <div class="card">
                                 <div class="card-header ">
                                     <h4 class="card-title">Daily</h4>
-                                    <p class="card-category">Daily yoyo chart</p>
+                                    <p class="card-category">Daily Shouts chart</p>
                                 </div>
                                 <div class="card-body ">
                                   <%= line_chart @orders_a.group_by_day(:created_at).count %>

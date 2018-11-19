@@ -3,6 +3,13 @@ class OrdersController < ApplicationController
   #before_action :authenticate_user! || before_action :authenticate_buyer
   # before_action :deny_to_visitors
 
+  def buyer_purchases
+    @orders = Order.all.where(buyer: current_user || current_buyer)
+
+
+  end
+
+
   def order_and_sales_upload
     #Order.where(:id).joins(:sales_upload).where("sales_upload.sorder_id = ?")
 
@@ -123,8 +130,7 @@ end
           end
           if charge_error
             flash[:error] = charge_error
-            redirect_to new_charge_path
-            @order.destroy
+            redirect_to listing_path(@listing)
           else
 
     # if @order.valid?
@@ -178,26 +184,74 @@ end
       end
     end
 
-  # PATCH/PUT /orders/1
-  # PATCH/PUT /orders/1.json
-  def update
+  def charge_update
     respond_to do |format|
-      if @order.update(order_params)
-        if user_signed_in?
+      @amount = (@order.order_price).to_i * 100
+      @amount_seller = (@order.order_price).to_i * 75
+      if @order.update(params[:video])
+        if user_signed_in? && user.seller?
                       charge = Stripe::Charge.create({
                         :amount      => (@order.order_price).to_i * 100,
                         :description => 'Rails Stripe customer',
                         :currency    => 'usd',
                         :customer => @order.stripe_customer_token,
-
+                        :destination => {
+                          :amount => @amount_seller ,
+                          :account => (@order.seller.stripe_token),
+                        }
                       })
+          @order.order_status = "charged"
+          format.html { redirect_to @order, notice: 'Order was successfully uploaded.' }
+          format.json { render :show, status: :ok, location: @order }
+        else
+          format.html { render :edit }
+          format.json { render json: @order.errors, status: :unprocessable_entity }
+        end
+      end
+    end
+  end
 
-                      # transfer = Stripe::Transfer.create({
-                      #   application_fee_percent: 75
+  # def cancel_update
+  #   respond_to do |format|
+  #     if @order.update(params[:order_update])
+  #       if user_signed_in?
+  #         if @order.order_status = "cancelled"
+  #
+  #           format.html { redirect_to @order, notice: 'Order was successfully cancelled.' }
+  #           format.json { render :show, status: :ok, location: @order }
+  #         else
+  #           format.html { render :edit }
+  #           format.json { render json: @order.errors, status: :unprocessable_entity }
+  #         end
+  #       end
+  #     end
+  #   end
+  # end
+
+
+  # PATCH/PUT /orders/1
+  # PATCH/PUT /orders/1.json
+  def update
+    respond_to do |format|
+      #
+      # @amount = (@order.order_price).to_i * 100
+      # @amount_seller = (@order.order_price).to_i * 75
+
+      if @order.update(order_params)
+        if user_signed_in?
+                      # charge = Stripe::Charge.create({
+                      #   :amount      => (@order.order_price).to_i * 100,
+                      #   :description => 'Rails Stripe customer',
                       #   :currency    => 'usd',
-                      #   destination: @listing.seller_id,
-                      #   transfer_group: "notes_328324"
+                      #   :customer => @order.stripe_customer_token,
+                      #   :destination => {
+                      #     :amount => @amount_seller ,
+                      #     :account => (@order.seller.stripe_token),
+                      #   }
+                      #
                       # })
+
+          # if charge successfull && @order.video.present?
 
           format.html { redirect_to @order, notice: 'Order was successfully uploaded.' }
           format.json { render :show, status: :ok, location: @order }
@@ -229,6 +283,15 @@ end
     end
   end
 
+  def order_cancel
+    respond_to do |format|
+      if @order.update(order_status)
+        format.html { redirect_to @order, notice: 'Order was successfully cancelled.' }
+        format.json { head :no_content }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
@@ -238,6 +301,10 @@ end
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
       params.require(:order).permit(:name, :email, :image, :video, :description, :order_status)
+    end
+
+    def order_status
+      params.permit(:order_status)
     end
 
     def deny_to_visitors

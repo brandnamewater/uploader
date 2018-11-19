@@ -14,6 +14,10 @@ Rails.application.routes.draw do
     resources :stripe_accounts
   end
 
+  resources :stripe_accounts do
+    resources :bank_accounts
+  end
+
 
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
@@ -23,6 +27,8 @@ Rails.application.routes.draw do
 end
 
 resources :bank_accounts
+
+  get 'stripe_show' => "stripe_accounts#show"
 
 
   get 'stripe_' => "stripe_account#create"
@@ -45,7 +51,7 @@ resources :bank_accounts
   # resolve('Charge') { [:orders] }
 
   # resources :charges
-
+  get 'edit_stripe' => "stripe_accounts#edit"
 
   # get 'stripe_accounts/full' => "stripe_accounts#full"
 
@@ -64,10 +70,17 @@ resources :bank_accounts
 
   get 'purchases' => "orders#purchases"
 
+  get 'buyer_purchases' => "orders#buyer_purchases"
+
+
 
   get 'dashboard' => "dashboard#dashboard"
   get 'yoyo' => "dashboard#tables"
   get 'charts' => "dashboard#charts"
+  get 'settings' => "dashboard#settings"
+  get 'account' => "dashboard#account"
+  get 'payout_destination' => "dashboard#payout_destination"
+
 
 get 'auth' => "users#index"
 

@@ -1,11 +1,11 @@
 Rails.configuration.stripe = {
-  :publishable_key => 'pk_test_WU12340TqTSqQJucPWU8kh',
-  :secret_key      => 'sk_test_0IFh1234w89a7hCAaNs4I'
+  :publishable_key => 'pk_test_WUSowiZS0TqTSqQJucPWU8kh',
+  :secret_key      => 'sk_test_0IFhXRY60k0w89a7hCAaNs4I'
 }
 
 Stripe.api_key = Rails.configuration.stripe[:secret_key]
 
-StripeEvent.signing_secret = 'whsec_UoHxVoiPkem41234YxU3cpcjXwOWzV'
+StripeEvent.signing_secret = 'whsec_UoHxVoiPkem44yC2qQYxU3cpcjXwOWzV'
 
 
 

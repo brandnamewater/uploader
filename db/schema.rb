@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_10_054340) do
+ActiveRecord::Schema.define(version: 2018_11_16_062803) do
 
   create_table "bank_accounts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "stripe_account_id"
   end
 
   create_table "buyers", force: :cascade do |t|
@@ -70,7 +71,7 @@ ActiveRecord::Schema.define(version: 2018_11_10_054340) do
     t.integer "exp_year"
     t.string "video"
     t.string "name"
-    t.boolean "order_status", default: true, null: false
+    t.integer "order_status", default: 1, null: false
     t.string "stripe_customer_token"
     t.decimal "order_price"
   end
@@ -129,6 +130,7 @@ ActiveRecord::Schema.define(version: 2018_11_10_054340) do
     t.boolean "buyer", default: true
     t.string "stripe_token"
     t.string "stripe_account"
+    t.boolean "seller", default: false
     t.index ["approved"], name: "index_users_on_approved"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

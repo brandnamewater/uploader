@@ -12,9 +12,11 @@ before_action :authenticate_user!
 
 
 
-#    def edit
-#      @user = User.find(params[:id])
-#    end
+   def edit
+     @user = User.find(params[:id])
+     @stripe_account = StripeAccount.find(params[:id])
+
+   end
 
   def show
 
