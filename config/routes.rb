@@ -1,9 +1,26 @@
 Rails.application.routes.draw do
 
+  resources :video_orders
+  get 'admin/users' => 'admin_dashboard#users'
+  get 'admin/sellers' => 'admin_dashboard#sellers'
+  get 'admin/buyers' => 'admin_dashboard#buyers'
+  get 'admin/orders' => 'admin_dashboard#orders'
+  get 'admin/listings' => 'admin_dashboard#listings'
+  get 'admin/analytics' => 'admin_dashboard#website_analytics'
+
+
+
+
+  resources :admin_dashboard
   # resources :stripe_accounts
   # resources :user_listings
   mount StripeEvent::Engine, at: '/stripe-events' # provide a custom path
-  #resources :sales_uploads
+
+
+  authenticated :user, ->(user) { user.admin? } do
+    mount Blazer::Engine, at: "blazer"
+  end
+
   devise_for :buyers
   resources :orders
   devise_for :users, controllers: { confirmations: 'confirmations' }
@@ -18,7 +35,9 @@ Rails.application.routes.draw do
     resources :bank_accounts
   end
 
-
+  resources :orders do
+    resources :video_orders
+  end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
@@ -26,7 +45,19 @@ Rails.application.routes.draw do
     resources :orders
 end
 
+  resources :users do
+    resources :orders
+  end
+
 resources :bank_accounts
+
+  resources :orders do
+    member do
+      patch :charge_update
+      put :charge_update
+    end
+  end
+
 
   get 'stripe_show' => "stripe_accounts#show"
 
@@ -34,6 +65,8 @@ resources :bank_accounts
   get 'stripe_' => "stripe_account#create"
 
   get 'stripe_new' => "stripe_account#new"
+
+  get 'cancel' => "orders#cancel_update"
 
   # resources :listings do
   #   resources :charges
@@ -75,7 +108,7 @@ resources :bank_accounts
 
 
   get 'dashboard' => "dashboard#dashboard"
-  get 'yoyo' => "dashboard#tables"
+  get 'shouts' => "dashboard#tables"
   get 'charts' => "dashboard#charts"
   get 'settings' => "dashboard#settings"
   get 'account' => "dashboard#account"
@@ -85,6 +118,8 @@ resources :bank_accounts
 get 'auth' => "users#index"
 
 get 'stripe' => "listings#stripe"
+
+get 'analytics' => "dashboard#order_analytics"
 
 # post 'charge' => "layouts#charges"
 #

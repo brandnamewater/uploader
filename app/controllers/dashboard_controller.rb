@@ -1,4 +1,8 @@
 class DashboardController < ApplicationController
+  before_action :authenticate_user!
+  # load_and_authorize_resource
+  layout "admin"
+
 
   def account
 
@@ -14,12 +18,19 @@ class DashboardController < ApplicationController
       {
         :limit => 10,
         type: 'payment',
-        available_on: { gt: Time.now.tomorrow.to_i },
+        available_on: { gt: Time.now.to_i },
       },
         { stripe_account: current_user.stripe_token }
     )
 
-
+    @transaction_1 = Stripe::BalanceTransaction.all(
+      {
+        :limit => 1,
+        type: 'payment',
+        available_on: { gt: Time.now.to_i },
+      },
+        { stripe_account: current_user.stripe_token }
+    )
 
     @transfer = Stripe::Transfer.list(
       {
@@ -27,7 +38,6 @@ class DashboardController < ApplicationController
       },
       {stripe_account: current_user.stripe_token}
     )
-
 
     @payments = Stripe::Charge.list(
       {
@@ -37,10 +47,17 @@ class DashboardController < ApplicationController
       { stripe_account: current_user.stripe_token } # The Stripe ID of the user viewing the dashboard
     )
 
-
     @payouts = Stripe::Payout.list(
       {
         limit: 100,
+        expand: ['data.destination'] # Get some extra detail about the bank account
+      },
+      { stripe_account: current_user.stripe_token } # Again, authenticating with the ID of the connected account
+    )
+
+    @payout_1 = Stripe::Payout.list(
+      {
+        limit: 1,
         expand: ['data.destination'] # Get some extra detail about the bank account
       },
       { stripe_account: current_user.stripe_token } # Again, authenticating with the ID of the connected account
@@ -65,15 +82,19 @@ class DashboardController < ApplicationController
 
 
   def settings
-    @user = current_user.id
-    @stripe_account = StripeAccount.find_by(params[:aa])
+    @user = current_user
+    @stripe_account = current_user.stripe_account
   end
 
+  def order_analytics
+    @orders_referring = Order.joins(:visit).group("referring_domain").count
+    @orders_country = Order.joins(:visit).group("city").count
+    # @listing_visits = Ahoy::Event.where(name: "Listing Viewed").where_properties(listing_id: current_user).count
+
+  end
 
   def dashboard
-    # @orders = Order.all.where(seller: current_user).paginate(:page => params[:page], :per_page => 15) || @orders = Order.all.where(seller: current_buyer).paginate(:page => params[:page], :per_page => 15)
-    #@sales_upload = SalesUpload.new(params[:video])
-    #@listing = Listing.find(params[:listing_id])
+
     @orders_a = Order.all.where(seller: current_user).paginate(:page => params[:month_orders_page], :per_page => 12)
     @orders_b = Order.all.where(seller: current_user).paginate(:page => params[:day_orders_page], :per_page => 7)
 
@@ -85,12 +106,6 @@ class DashboardController < ApplicationController
     @orders_day = @orders_b.all.group_by { |day|  day.created_at.beginning_of_day }
 
 
-    #@sales_upload = SalesUpload.new(sales_upload_params)
-    #@sales_upload = SalesUpload.new
-
-    #@order = Order.find(params[:orders_id])]
-    #@order = Order.find(params[:order_id])
-    #@sales_upload.user_id = current_user.id
     @order = Order.new
 
   end
@@ -100,25 +115,13 @@ class DashboardController < ApplicationController
     user = current_user || current_buyer
     orders = Order.where(seller: user)
     orders_with_video = Order.find_by(video: present?)
-
-    @orders_tables = orders.paginate(:page => params[:all_orders_page], :per_page => 15)
-    @orders_tables_comp = Order.all.where(:order_status == 2).paginate(:page => params[:comp_orders_page], :per_page => 15)
-    @orders_tables_up = Order.all.where(:order_status == 1).paginate(:page => params[:up_orders_page], :per_page => 15)
-    # @orders_tables_present = Order.all.where(orders_with_video).paginate(:page => params[:present_order_page], :per_page => 15)
-
-    # @orders_for_card = orders.paginate(:page => params[:whatever_orders_page], :per_page => 7)
-    # @orders_by_month = orders.group_by { |mon| mon.created_at.beginning_of_month }
-    # @orders_with_video = orders_with_video && orders_with_video.paginate(:page => params[:completed_orders_page], :per_page => 7)
+    orders_charged = orders.where(order_status: [2] )
+    orders_created = orders.where(order_status: [1] )
 
 
-
-    # @orders = Order.all.where(seller: current_user).paginate(:page => params[:page], :per_page => 15) || @orders = Order.all.where(seller: current_buyer).paginate(:page => params[:page], :per_page => 15)
-    # @orders_pag_7 = Order.all.where(seller: current_user).paginate(:page => params[:page_7], :per_page => 7) || @orders = Order.all.where(seller: current_buyer).paginate(:page => params[:page_7], :per_page => 7)
-    #
-    # @orders_pag_7_1 = Order.where(video: present?).paginate(:page => params[:page_7_1], :per_page => 7)
-    # @orders_month = @orders.group_by { |mon| mon.created_at.beginning_of_month }
-    # @orders_b = Order.all.where(seller: current_user).find_by(:video.present?).paginate(:page => params[:page], :per_page => 7)
-
+    @orders_tables = orders.order('created_at DESC').paginate(:page => params[:all_orders_page], :per_page => 15)
+    @orders_tables_comp = orders_charged.order('created_at DESC').paginate(:page => params[:comp_orders_page], :per_page => 8)
+    @orders_tables_up = orders_created.order('created_at DESC').paginate(:page => params[:up_orders_page], :per_page => 8)
 
   end
 

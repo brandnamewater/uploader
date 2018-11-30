@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-
+layout "admin", :only => [ :edit, :update ]
 before_action :authenticate_user!
 
   def index
@@ -23,20 +23,30 @@ before_action :authenticate_user!
   end
 
 
-    def update
-     @user = User.find(params[:id])
+  def update
+   @user = User.find(params[:id])
+   if @user.update(user_params) # <- you'll need to define these somewhere as well
+     respond_to do |format|
+       format.html { redirect_to '/auth', notice: "yahoo" }
+       format.json { render json: @user }
+   else
+       format.html { render :edit }
+       format.json { render json: { errors: @user.errors }, status: :unprocessable_entity }
+   end
 
-     if @user.update(user_params) # <- you'll need to define these somewhere as well
-       respond_to do |format|
-         format.html { redirect_to '/auth' }
-         format.json { render json: @user }
-       end
-     else
-       respond_to do |format|
-         format.html { render :edit }
-         format.json { render json: { errors: @user.errors }, status: :unprocessable_entity }
-      end
-end
+   if @user.update(user_seller_params) # <- you'll need to define these somewhere as well
+     respond_to do |format|
+       format.html { redirect_to '/admin_dashboard/User', notice: "yahoo" }
+       format.json { render json: @user }
+   else
+       format.html { render :edit }
+       format.json { render json: { errors: @user.errors }, status: :unprocessable_entity }
+   end
+
+
+ end
+
+
 end
 
 
@@ -46,7 +56,11 @@ end
 
 
      def user_params
-       params.require(:user).permit(:name, :approved, stripe_account: [:stripe_account])
+       params.require(:user).permit(:name, :approved, :seller, :buyer, :admin, stripe_account: [:stripe_account])
+     end
+
+     def user_seller_params
+       params.require(:user).permit(:seller)
      end
 
 end

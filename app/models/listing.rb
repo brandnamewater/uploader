@@ -2,6 +2,8 @@ class Listing < ApplicationRecord
   mount_uploader :image, ImageUploader
   serialize :image, JSON # If you use SQLite, add this line.
 
+  visitable
+
 #  validates attachment content type :image, :content type => /\Aimage\/.*\Z/
 
   validates :name, :description, :price, presence: true

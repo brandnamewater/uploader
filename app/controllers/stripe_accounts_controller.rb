@@ -1,4 +1,5 @@
 class StripeAccountsController < ApplicationController
+  layout 'admin'
   before_action :set_stripe_account, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
 

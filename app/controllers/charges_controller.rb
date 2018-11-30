@@ -3,6 +3,7 @@ class ChargesController < ApplicationController
   protect_from_forgery prepend: true
   before_action :set_order, only: [:show, :edit, :update, :destroy]
     respond_to :html, :js
+  before_action :authenticate_user!
 
 
   def new

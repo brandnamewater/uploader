@@ -1,83 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-    <!--     Fonts and icons     -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
-    <!-- CSS Files -->
-</head>
-
-<body>
-    <div class="wrapper">
-        <div class="sidebar" data-image=" ">
-            <!--
-        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
-
-        Tip 2: you can also add an image using data-image tag
-    -->
-            <div class="sidebar-wrapper">
-                <div class="logo">
-                    <a href="/dashboard" class="simple-text">
-                      SHOUTSTV
-
-                    </a>
-                </div>
-                <ul class="nav">
-                  <% if user_signed_in? || current_user.try(:admin?) %>
-                    <li>
-                        <a class="nav-link" href="/dashboard">
-                            <i class="nc-icon nc-chart-pie-35"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="/yoyo">
-                            <i class="nc-icon nc-circle-09"></i>
-                            <p>Shouts</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="/seller">
-                            <i class="nc-icon nc-notes"></i>
-                            <p>Manage Listing(s)</p>
-                        </a>
-                    </li>
-                    <% end %>
-                    <li>
-                        <a class="nav-link" href="/purchases">
-                            <i class="nc-icon nc-paper-2"></i>
-                            <p>Purchases</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="/users/edit">
-                            <i class="nc-icon nc-paper-2"></i>
-                            <p>User</p>
-                        </a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/settings">
-                            <i class="nc-icon nc-paper-2"></i>
-                            <p>Settings</p>
-                        </a>
-                    </li>
-                </ul>
-
-            </div>
-        </div>
-
-        <% if user_signed_in? || current_user.try(:admin?) %>
-
-        <div class="main-panel">
-            <!-- Navbar -->
-
-            <!-- End Navbar -->
-            <div class="content">
-                <div class="container-fluid">
                   <div class="row">
                       <div class="col-md-12">
                         <div class="card ">
@@ -100,7 +21,7 @@
                                     </div>
                                   </li>
                                 </a>
-
+                                <% if current_user.stripe_account %>
                                 <%= link_to user_stripe_account_path(@user, @stripe_account) do %>
                                   <li class="setting-section">
                                     <div class="setting-awesome-font">
@@ -112,6 +33,19 @@
                                     </div>
                                   </li>
                                   <% end %>
+                                  <% else current_user.stripe_account? %>
+                                  <%= link_to new_user_stripe_account_path(@user) do %>
+                                    <li class="setting-section">
+                                      <div class="setting-awesome-font">
+                                        <i class="fa fa-credit-card" aria-hidden="true"></i>
+                                      </div>
+                                      <div class="setting-text">
+                                        <h5>Payout Settings</h5>
+                                        <p>Enable and manage your payout settings and details<p>
+                                      </div>
+                                    </li>
+                                    <% end %>
+                                    <% end %>
 
                                 <a href="/account" class="no-decoration">
                                   <li class="setting-section">
@@ -145,7 +79,6 @@
     </div>
   </div> -->
 
- <% end %>
 </body>
 
 <script type="text/javascript">

@@ -1,8 +1,14 @@
 class ListingsController < ApplicationController
+  load_and_authorize_resource
+  # layout :admin_layout
+  layout "admin", :only => [ :payment, :seller ]
   before_action :set_listing, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
-  before_action :check_user, only: [:edit, :update, :destroy]
-  before_action :user_approved, only: [:create]
+
+  # before_action :check_user, only: [:edit, :update, :destroy]
+  # before_action :check_user_seller, only: [:create, :destroy]
+
+  # before_action :user_approved, only: [:create]
   # attr_accessor :new_category_name
 
   def payment
@@ -172,9 +178,26 @@ class ListingsController < ApplicationController
       end
     end
 
+    def check_user_seller
+      if current_user != (current_user.seller == true )
+        redirect_to root_url, alert: "Sorry, this isn't your listing 2"
+      end
+    end
+
     def user_approved
       if current_user != (@user.approved == true)
         redirect_to root_url, alert: "Sorry, your account isn't approved, please contact the admins"
       end
     end
+
+    # def admin_layout
+    #   case 'payment'
+    #   when 'payment'
+    #     'application'
+    #   when 'seller'
+    #   else
+    #     'application'
+    #   end
+    # end
+
 end

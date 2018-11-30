@@ -52,87 +52,21 @@
 
 -->
 
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="utf-8" />
-
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-    <!--     Fonts and icons     -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
-    <!-- CSS Files -->
-</head>
-
-<body>
-    <div class="wrapper">
-        <div class="sidebar" data-image=" ">
-            <!--
-        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
-
-        Tip 2: you can also add an image using data-image tag
-    -->
-            <div class="sidebar-wrapper">
-                <div class="logo">
-                    <a href="/dashboard" class="simple-text">
-                      SHOUTS.tv
-
-                    </a>
-                </div>
-                <ul class="nav">
-                  <li>
-                        <a class="nav-link" href="/dashboard">
-                            <i class="nc-icon nc-chart-pie-35"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="/shouts">
-                            <i class="nc-icon nc-circle-09"></i>
-                            <p>Shouts</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="/seller">
-                            <i class="nc-icon nc-notes"></i>
-                            <p>Manage Listing(s)</p>
-                        </a>
-                    </li>
-                    <li>
-                      <li class="nav-item active">
-                        <a class="nav-link" href="/users/edit">
-                            <i class="nc-icon nc-paper-2"></i>
-                            <p>User</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="/settings">
-                            <i class="nc-icon nc-paper-2"></i>
-                            <p>Settings</p>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-        <div class="main-panel">
-            <!-- Navbar -->
-
-            <!-- End Navbar -->
-            <div class="content">
-                <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6 mx-auto">
                             <div class="card scroll">
                                 <div class="card-header ">
-                                    <h4 class="card-title">Your Shouts</h4>
-                                    <p class="card-category">Here's your Shouts!</p>
+                                    <h4 class="card-title">Edit & Update Your Accout Login</h4>
+                                    <p class="card-category"></p>
                                 </div>
                                 <div class="card-body ">
                                   <div data-spy="scroll" data-offset="0">
-                                    <h2>Edit <%= resource_name.to_s.humanize %></h2>
+                                    <div class="center">
+
+                                    <h2>Account</h2>
+
+                                  </div>
 
                                     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
                                       <%= devise_error_messages! %>
@@ -178,11 +112,11 @@
                                 </div>
 
                             </div>
-                            <!-- <% if current_user.stripe_token.present? %> -->
-                            <!-- <%= link_to 'Edit Payment Settings', new_user_stripe_account_path(@user), data: {
+                            <!-- <% if current_user.stripe_token.present? %>
+                            <%= link_to 'Edit Payment Settings', new_user_stripe_account_path(@user), data: {
                               :confirm =>'Are you sure?
-                                Editing any of your current payment settings will override any prevoius setting and you will need to re-enter your bank information.  You should only be doing this if you have changed banks, bank accounts, have a new location or your banking Information has updated.'} %> -->
-                            <!-- <%= link_to 'Edit Payment Settings', "javascript:void(0)", 'data-target': "#myModal-1", 'data-toggle': "modal" %>
+                                Editing any of your current payment settings will override any prevoius setting and you will need to re-enter your bank information.  You should only be doing this if you have changed banks, bank accounts, have a new location or your banking Information has updated.'} %>
+                            <%= link_to 'Edit Payment Settings', "javascript:void(0)", 'data-target': "#myModal-1", 'data-toggle': "modal" %>
                             <% else %>
                             <%= link_to 'Add Payment Details', new_user_stripe_account_path(@user) %>
                             <% end %> -->
@@ -199,6 +133,7 @@
 
         </div>
     </div>
+
 
 </body>
 

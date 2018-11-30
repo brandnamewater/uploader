@@ -40,11 +40,20 @@ gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
+gem 'api-pagination', '~> 4.1', '>= 4.1.1'
+
 gem 'will_paginate', '~> 3.1', '>= 3.1.6'
 
 gem 'groupdate'
 
+gem 'blazer'
+
+gem 'ahoy_matey'
+
 gem 'devise'
+
+gem 'cancancan', '~> 2.0'
+
 
 gem 'carrierwave', '~> 1.0'
 

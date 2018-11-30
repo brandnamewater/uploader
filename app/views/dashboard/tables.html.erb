@@ -1,73 +1,4 @@
-<!DOCTYPE html>
-<% if user_signed_in? || current_user.try(:admin?) %>
 
-<html lang="en">
-
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-    <!--     Fonts and icons     -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
-    <!-- CSS Files -->
-</head>
-
-<body>
-
-    <div class="wrapper">
-        <div class="sidebar" data-image=" ">
-            <!--
-        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
-
-        Tip 2: you can also add an image using data-image tag
-    -->
-            <div class="sidebar-wrapper">
-                <div class="logo">
-                    <a href="/dashboard" class="simple-text">
-                        SHOUTS
-                    </a>
-                </div>
-                <ul class="nav">
-                    <li>
-                        <a class="nav-link" href="/dashboard">
-                            <i class="nc-icon nc-chart-pie-35"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/yoyo">
-                            <i class="nc-icon nc-circle-09"></i>
-                            <p>Shouts</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="/seller">
-                            <i class="nc-icon nc-notes"></i>
-                            <p>Manage Listings</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="/users/edit">
-                            <i class="nc-icon nc-paper-2"></i>
-                            <p>User</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="/settings">
-                            <i class="nc-icon nc-paper-2"></i>
-                            <p>Settings</p>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="main-panel">
-            <!-- Navbar -->
-
-            <!-- End Navbar -->
-            <div class="content">
-                <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card strpied-tabled-with-hover">
@@ -82,7 +13,6 @@
                                           <tr>
                                             <th class="center">ID</th>
                                             <th class="text-xs-center">Customer</th>
-                                            <!-- <th class="center">Price</th> -->
                                             <th class="center">Date</th>
                                             <th class="center">View / Upload Order</th>
                                             <th class="center">Upload</th>
@@ -94,26 +24,26 @@
                                             <tr>
                                             <td class="center"><%= order.id %></td>
                                             <td class="center"><%= order.buyer.name %></td>
-                                            <!-- <td class="center"><%= number_to_currency(order.listing.price) %></td> -->
                                             <td class="center"><%= order.created_at.strftime("%B %-d, %Y") %></td>
-                                            <td class="center"><%= link_to "View", order_path(order), class: "btn btn-primary-1" %></td>
+                                            <td class="center"><%= link_to "View", user_order_path(order.buyer_id, order), class: "btn btn-primary-1" %></td>
                                             <td class="center">
                                               <div class="field">
-                                                <% if order.video.present? %>
+                                                <% if order.video.present? || order.order_status["charged"] %>
                                                   <div class="font-awesome-shadow">
-                                                    <i class="fa fa-check-square" aria-hidden="true"></i>
+                                                    <i class="fa fa-check-square" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Shout complete!"></i>
                                                   </div>
+                                                  <% elsif order.order_status["cancelled"] %>
+                                                  <p>x</p>
                                                   <% else %>
-                                                  <%= link_to "Upload", edit_order_path(order), class: "btn btn-primary-1" %>
+                                                  <%= link_to "Upload", edit_user_order_path(order.buyer_id, order), class: "btn btn-primary-1" %>
                                                   <% end %>
                                               </div>
                                             </td>
                                             <td class="center">
 
-                                                    <% if order.order_status == "cancelled" %>
-                                                      cancelled
-                                                      <% elsif order.video.present? %>
-                                                        <i class="fa fa-times" aria-hidden="true" style="color:grey"></i>
+                                                    <% if order.order_status["cancelled"] ||order.order_status["charged"] %>
+                                                        <i class="fa fa-times" aria-hidden="true" style="color:grey" data-toggle="tooltip" data-placement="top"
+                                                          title="Action Disabled."></i>
                                                           <% else %>
                                                             <%= form_for order, remote: true do |f| %>
                                                             <%= f.hidden_field :order_status, value: "cancelled" %>
@@ -157,10 +87,8 @@
                                         <% @orders_tables_comp.each do |order| %>
                                           <tbody>
                                             <tr>
-                                              <% if order.order_status == "charged" && order.video.present? %>
                                             <td class="center"><%= order.id %></td>
                                             <td class="center"><%= order.buyer.name %></td>
-                                            <!-- <td class="center"><%= number_to_currency(order.listing.price) %></td> -->
                                             <td class="center"><%= order.created_at.strftime("%m/%-d/%Y") %></td>
                                             <td class="center"><%= link_to "View", order_path(order), class: "btn btn-primary-1" %></td>
                                             <td class="center">
@@ -171,7 +99,6 @@
                                               </div>
                                             </td>
                                           </tr>
-                                          <% end %>
                                           <% end %>
                                         </tbody>
                                       </table>
@@ -208,9 +135,7 @@
                                             <% @orders_tables_up.each do |order| %>
                                               <tbody>
                                                 <tr>
-                                                  <% if order.order_status == "created" && order.video.blank? %>
                                                 <td class="center"><%= order.buyer.name %></td>
-                                                <!-- <td class="center"><%= number_to_currency(order.listing.price) %></td> -->
                                                 <td class="center"><%= order.created_at.strftime("%m/%-d/%Y") %></td>
                                                 <td class="center"><%= link_to "View", order_path(order), class: "btn btn-primary-1" %></td>
                                                 <td class="center">
@@ -219,7 +144,6 @@
                                                   </div>
                                                 </td>
                                               </tr>
-                                              <% end %>
                                               <% end %>
                                             </tbody>
                                           </table>
@@ -321,5 +245,12 @@
 </body>
 <!--   Core JS Files   -->
 
-<% end %>
+
+<script>
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
+</script>
 </html>

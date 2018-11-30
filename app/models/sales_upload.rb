@@ -16,12 +16,7 @@ class SalesUpload < ApplicationRecord
   end
   #belongs_to :order
 
-  belongs_to :user
-#  belongs_to :buyer
-  #has_many :listings
-  #belongs_to :order
-  #has_many :orders, through: :listings
-  has_one :order
-  has_one :buyer
+  belongs_to :order
+
 
 end

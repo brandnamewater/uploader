@@ -21,21 +21,21 @@
           <% if user.seller == true %>
             <p>Approved</p>
             <% else %>
-            <%= form_for user, remote: true do |f| %>
-            <%= f.hidden_field :seller, value: true %>
-            <%= f.submit "Approve User", confirm: "Are you sure?", class: "form-control" %>
-        <% end %>
-      <% end %>
+              <%= form_for user, remote: true do |f| %>
+              <%= f.hidden_field :seller, value: true %>
+              <%= f.submit "Approve User", data: {confirm: "Are you sure?"}, class: "form-control" %>
+            <% end %>
+          <% end %>
       </td>
         <td>
-          <% if user.approved == true %>
+          <% if user.admin == true %>
             <p>Approved</p>
             <% else %>
-            <%= form_for user, remote: true do |f| %>
-            <%= f.hidden_field :approved, value: true %>
-            <%= f.submit "Approve User", confirm: "Are you sure?", class: "form-control" %>
-        <% end %>
-      <% end %>
+              <%= form_for user, remote: true do |f| %>
+              <%= f.hidden_field :admin, value: true %>
+              <%= f.submit "Approve User", data: {confirm: "Are you sure?"}, class: "form-control" %>
+            <% end %>
+          <% end %>
       </td>
     </tr>
   </tbody>

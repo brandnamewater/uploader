@@ -1,7 +1,11 @@
 class Order < ApplicationRecord
 
+  include ActiveModel::Dirty
+
   mount_uploader :video, VideoUploader
   serialize :video, JSON # If you use SQLite, add this line.
+
+  visitable
 
   # def set_success(format, opts)
   #   self.success = true
@@ -22,6 +26,8 @@ class Order < ApplicationRecord
   belongs_to :buyer, class_name: "User"
   # belongs_to :seller, class_name: "User"
   belongs_to :seller, foreign_key: :seller_id, class_name: "User"
+
+  has_one :video_order
 
 #  belongs_to :buyer
   #has_one :sales_upload
